@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/rounded_edittext"
-            android:hint="Username"
+            android:hint="Correo Electrónico"
             android:inputType="textPersonName"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_edittext"
-            android:hint="Password"
+            android:hint="Contraseña"
             android:inputType="textPassword"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Welcome Back!"
+            android:text="Bienvenido!"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_buttons"
             android:backgroundTint="@color/brown_700"
-            android:text="LOGIN"
+            android:text="INGRESAR"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:background="#00FFFFFF"
-            android:text="Forgot password?"
+            android:text="Olvidaste tu contraseña?"
             android:textAllCaps="false"
             android:textColor="@color/brown_700"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,11 +95,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Don´t have an account?"
+            android:text="No tienes cuenta?"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.336"
+            app:layout_constraintHorizontal_bias="0.329"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -107,12 +107,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
-            android:text="SIGN IN"
+            android:text="REGISTRATE"
             android:textColor="@color/brown_700"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.636"
+            app:layout_constraintHorizontal_bias="0.578"
             app:layout_constraintStart_toStartOf="@+id/textView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
