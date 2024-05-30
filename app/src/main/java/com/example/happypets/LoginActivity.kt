@@ -9,32 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 
-    private var registeredUser: Usuario? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Recuperar los datos del usuario registrado si existen
-        val userId = intent.getIntExtra("userId", -1)
-        val nombre = intent.getStringExtra("nombre") ?: ""
-        val email = intent.getStringExtra("email") ?: ""
-        val telefono = intent.getStringExtra("telefono") ?: ""
-        val password = intent.getStringExtra("password") ?: ""
-        val direccion = intent.getStringExtra("direccion") ?: ""
-        val mascota = intent.getStringExtra("mascota") ?: ""
-
-        if (userId != -1) {
-            registeredUser = Usuario(
-                id = userId,
-                nombre = nombre,
-                email = email,
-                telefono = telefono,
-                password = password,
-                direccion = direccion,
-                mascota = mascota
-            )
-        }
+        val userManager = UserManager(this)
 
         val usernameEditText = findViewById<EditText>(R.id.username)
         val passwordEditText = findViewById<EditText>(R.id.password)
@@ -47,25 +26,28 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()) {
-                // Comprobar las credenciales con el usuario registrado
-                if (registeredUser != null && username == registeredUser!!.email && password == registeredUser!!.password) {
+                // Obtener la lista de usuarios registrados
+                val users = userManager.getUsers()
+                val user = users.find { it.email == username && it.password == password }
+
+                if (user != null) {
                     // Autenticación exitosa, navegar a la siguiente actividad
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
                     // Autenticación fallida, mostrar un mensaje de error
-                    Toast.makeText(this, "La autenticacion falló. Por favor revisar su email y contraseña.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Authentication failed. Please check your username and password.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 // Campos vacíos, mostrar un mensaje de error
-                Toast.makeText(this, "Por favor ingrese su email y contraseña.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter both username and password.", Toast.LENGTH_SHORT).show()
             }
         }
 
         forgotPasswordButton.setOnClickListener {
             // Lógica para manejar la recuperación de la contraseña
-            Toast.makeText(this, "Disponible en proximas versiones", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show()
         }
 
         signUpButton.setOnClickListener {
