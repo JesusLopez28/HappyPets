@@ -46,8 +46,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         forgotPasswordButton.setOnClickListener {
-            // Lógica para manejar la recuperación de la contraseña
-            Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RecuperacionActivity::class.java)
+            startActivity(intent)
         }
 
         signUpButton.setOnClickListener {

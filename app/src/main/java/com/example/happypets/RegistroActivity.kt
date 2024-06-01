@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 class RegistroActivity : AppCompatActivity() {
 
     companion object {
-        var userIdCounter = 0 // Contador estático para generar IDs únicos
+        var userIdCounter = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
