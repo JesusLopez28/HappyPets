@@ -5,7 +5,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RecuperacionActivity : AppCompatActivity() {
 
@@ -20,43 +22,45 @@ class RecuperacionActivity : AppCompatActivity() {
             val email = emailEditText.text.toString()
             if (email.isNotEmpty()) {
                 val userManager = UserManager(this)
-                val user = userManager.getUsers().find { it.email == email }
+                val user = userManager.getUserByEmail(email)
                 if (user != null) {
                     sendRecoveryEmail(user)
                 } else {
                     Toast.makeText(this, "Email no encontrado", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Por favor introduce tu email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor ingresé un Email", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun sendRecoveryEmail(user: Usuario) {
-        val subject = "Informacion de tu cuenta"
+        val subject = "Información de tu cuenta"
         val message = """
-            Hola ${user.nombre}!,
+            Hola ${user.nombre},
             
-            Es un gusto volver a verte. Aquí tienes la información de tu cuenta:
+            Aquí tienes la información de tu cuenta:
             
             Nombre: ${user.nombre}
             Correo: ${user.email}
-            Telefono: ${user.telefono}
+            Celular: ${user.telefono}
             Contraseña: ${user.password}
             Domicilio: ${user.direccion}
             Mascota: ${user.mascota}
             
-            Gracias por usar HappyPets!
+            Gracias por usar Happy Pets!
         """.trimIndent()
 
-        MailSender(user.email, subject, message).send { success ->
-            runOnUiThread {
-                if (success) {
-                    Toast.makeText(this, "Email enviado", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "El envio falló", Toast.LENGTH_SHORT).show()
-                }
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val mailSender = MailSender(user.email, subject, message)
+                mailSender.send()
+                Toast.makeText(this@RecuperacionActivity, "Email enviado", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this@RecuperacionActivity, "El envío falló", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
             }
         }
     }
 }
+

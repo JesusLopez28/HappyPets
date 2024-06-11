@@ -13,35 +13,25 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val userManager = UserManager(this)
-
-        val usernameEditText = findViewById<EditText>(R.id.username)
+        val emailEditText = findViewById<EditText>(R.id.username)
         val passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.button)
         val forgotPasswordButton = findViewById<Button>(R.id.button2)
-        val signUpButton = findViewById<Button>(R.id.button4)
+        val registrateButton = findViewById<Button>(R.id.button4)
+
+        val userManager = UserManager(this)
 
         loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
+            val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            if (username.isNotEmpty() && password.isNotEmpty()) {
-                // Obtener la lista de usuarios registrados
-                val users = userManager.getUsers()
-                val user = users.find { it.email == username && it.password == password }
-
-                if (user != null) {
-                    // Autenticación exitosa, navegar a la siguiente actividad
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // Autenticación fallida, mostrar un mensaje de error
-                        Toast.makeText(this, "Autentificación fallida. Revisa tu usuario y contraseña.", Toast.LENGTH_SHORT).show()
-                }
+            val user = userManager.getUserByEmail(email)
+            if (user != null && user.password == password) {
+                Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             } else {
-                // Campos vacíos, mostrar un mensaje de error
-                Toast.makeText(this, "Por favor ingresa ambos campos, usuario y contraseña.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -50,10 +40,10 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        signUpButton.setOnClickListener {
-            // Lógica para manejar el registro de un nuevo usuario
+        registrateButton.setOnClickListener{
             val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
         }
     }
 }
+

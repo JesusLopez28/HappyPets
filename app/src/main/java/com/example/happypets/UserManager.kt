@@ -1,31 +1,63 @@
 package com.example.happypets
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.io.File
+import android.content.SharedPreferences
 
-class UserManager(private val context: Context) {
-    private val gson = Gson()
-    private val fileName = "users.json"
+class UserManager(context: Context) {
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    private val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
     fun saveUser(user: Usuario) {
-        val users = getUsers().toMutableList()
-        users.add(user)
-        saveUsersToFile(users)
+        editor.putString("user_${user.id}_nombre", user.nombre)
+        editor.putString("user_${user.id}_email", user.email)
+        editor.putString("user_${user.id}_telefono", user.telefono)
+        editor.putString("user_${user.id}_password", user.password)
+        editor.putString("user_${user.id}_direccion", user.direccion)
+        editor.putString("user_${user.id}_mascota", user.mascota)
+        editor.putInt("user_${user.id}_type", user.type)
+        editor.apply()
     }
 
-    fun getUsers(): List<Usuario> {
-        val file = File(context.filesDir, fileName)
-        if (!file.exists()) return emptyList()
-        val json = file.readText()
-        val type = object : TypeToken<List<Usuario>>() {}.type
-        return gson.fromJson(json, type)
+    fun getUserById(id: Int): Usuario? {
+        val nombre = sharedPreferences.getString("user_${id}_nombre", null)
+        val email = sharedPreferences.getString("user_${id}_email", null)
+        val telefono = sharedPreferences.getString("user_${id}_telefono", null)
+        val password = sharedPreferences.getString("user_${id}_password", null)
+        val direccion = sharedPreferences.getString("user_${id}_direccion", null)
+        val mascota = sharedPreferences.getString("user_${id}_mascota", null)
+        val type = sharedPreferences.getInt("user_${id}_type", -1)
+
+        return if (nombre != null && email != null && telefono != null && password != null &&
+            direccion != null && mascota != null && type != -1) {
+            Usuario(id, nombre, email, telefono, password, direccion, mascota, type)
+        } else {
+            null
+        }
     }
 
-    private fun saveUsersToFile(users: List<Usuario>) {
-        val json = gson.toJson(users)
-        val file = File(context.filesDir, fileName)
-        file.writeText(json)
+    fun getUserByEmail(email: String): Usuario? {
+        val allEntries = sharedPreferences.all
+        for ((key, value) in allEntries) {
+            if (key.endsWith("_email") && value == email) {
+                val id = key.split("_")[1].toInt()
+                return getUserById(id)
+            }
+        }
+        return null
+    }
+
+    fun getAllUsers(): List<Usuario> {
+        val users = mutableListOf<Usuario>()
+        val allEntries = sharedPreferences.all
+        val userIds = allEntries.keys.filter { it.endsWith("_nombre") }.map { it.split("_")[1].toInt() }
+
+        for (id in userIds) {
+            val user = getUserById(id)
+            if (user != null) {
+                users.add(user)
+            }
+        }
+        return users
     }
 }
