@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_productos"
+        android:title="Productos" />
+    <item
+        android:id="@+id/navigation_usuarios"
+        android:title="Usuarios" />
+    <item
+        android:id="@+id/navigation_citas"
+        android:title="Citas" />
+    <item
+        android:id="@+id/navigation_perfil"
+        android:title="Perfil" />
+</menu>
