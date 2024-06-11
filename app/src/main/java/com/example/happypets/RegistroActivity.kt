@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 class RegistroActivity : AppCompatActivity() {
 
     companion object {
-        var userIdCounter = 0 // Contador estático para generar IDs únicos
+        var userIdCounter = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
+
+        val userManager = UserManager(this)
 
         val nombreEditText = findViewById<EditText>(R.id.nombre)
         val emailEditText = findViewById<EditText>(R.id.email)
@@ -48,19 +50,12 @@ class RegistroActivity : AppCompatActivity() {
                     mascota = mascota
                 )
 
-                // Pasar los datos del usuario a LoginActivity
-                val intent = Intent(this, LoginActivity::class.java).apply {
-                    putExtra("userId", nuevoUsuario.id)
-                    putExtra("nombre", nuevoUsuario.nombre)
-                    putExtra("email", nuevoUsuario.email)
-                    putExtra("telefono", nuevoUsuario.telefono)
-                    putExtra("password", nuevoUsuario.password)
-                    putExtra("direccion", nuevoUsuario.direccion)
-                    putExtra("mascota", nuevoUsuario.mascota)
-                }
+                // Guardar el usuario en el archivo JSON
+                userManager.saveUser(nuevoUsuario)
+
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-                Toast.makeText(this, "Registro completado, bienvenido!", Toast.LENGTH_SHORT).show()
 
             } else {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
@@ -68,5 +63,4 @@ class RegistroActivity : AppCompatActivity() {
         }
     }
 }
-
 
