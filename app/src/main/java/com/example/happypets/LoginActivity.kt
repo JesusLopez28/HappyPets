@@ -37,11 +37,11 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 } else {
                     // Autenticación fallida, mostrar un mensaje de error
-                    Toast.makeText(this, "Authentication failed. Please check your username and password.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Autentificación fallida. Revisa tu usuario y contraseña.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 // Campos vacíos, mostrar un mensaje de error
-                Toast.makeText(this, "Please enter both username and password.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor ingresa ambos campos, usuario y contraseña.", Toast.LENGTH_SHORT).show()
             }
         }
 
