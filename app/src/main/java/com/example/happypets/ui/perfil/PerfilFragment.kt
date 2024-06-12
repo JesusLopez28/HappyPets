@@ -1,4 +1,4 @@
-package com.example.happypets.ui.notifications
+package com.example.happypets.ui.perfil
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.happypets.databinding.FragmentNotificationsBinding
+import com.example.happypets.databinding.FragmentPerfilBinding
 
-class NotificationsFragment : Fragment() {
+class PerfilFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentPerfilBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        val perfilViewModel =
+            ViewModelProvider(this).get(PerfilViewModel::class.java)
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentPerfilBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textPerfil
+        perfilViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

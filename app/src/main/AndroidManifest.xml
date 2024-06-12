@@ -19,10 +19,6 @@
             android:exported="false"
             android:label="@string/title_activity_main2" />
         <activity
-            android:name=".ActivityMenuAdmin"
-            android:exported="false"
-            android:label="@string/title_activity_menu_admin" />
-        <activity
             android:name=".RecuperacionActivity"
             android:exported="false" />
         <activity

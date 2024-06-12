@@ -58,6 +58,8 @@ dependencies {
     implementation("com.sun.mail:android-mail:1.6.6")
     implementation("com.sun.mail:android-activation:1.6.6")
     implementation("com.google.code.gson:gson:2.8.8")
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
