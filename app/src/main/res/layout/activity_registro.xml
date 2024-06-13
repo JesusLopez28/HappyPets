@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
         <EditText
-            android:id="@+id/telefono"
+            android:id="@+id/Precio_producto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -85,7 +85,7 @@
             app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/Stock_producto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/telefono" />
+            app:layout_constraintTop_toBottomOf="@+id/Precio_producto" />
 
         <EditText
             android:id="@+id/direccion"
@@ -114,7 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
+            app:layout_constraintTop_toBottomOf="@+id/Stock_producto" />
 
         <EditText
             android:id="@+id/mascota"

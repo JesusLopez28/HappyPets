@@ -17,7 +17,7 @@
 
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/Nombre_producto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -32,10 +32,10 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <TextView
-            android:id="@+id/textViewSubtitle"
+            android:id="@+id/Precio_Producto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewTitle"
+            android:layout_below="@id/Nombre_producto"
             android:layout_marginTop="6dp"
             android:text="$500.00"
             android:textColor="@color/brown_500"
@@ -43,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/Nombre_producto" />
 
         <ImageView
             android:id="@+id/imageView3"

@@ -17,8 +17,8 @@ class RegistroActivity : AppCompatActivity() {
 
         val nombreEditText = findViewById<EditText>(R.id.nombre)
         val emailEditText = findViewById<EditText>(R.id.email)
-        val telefonoEditText = findViewById<EditText>(R.id.telefono)
-        val passwordEditText = findViewById<EditText>(R.id.password)
+        val telefonoEditText = findViewById<EditText>(R.id.Precio_producto)
+        val passwordEditText = findViewById<EditText>(R.id.Stock_producto)
         val direccionEditText = findViewById<EditText>(R.id.direccion)
         val mascotaEditText = findViewById<EditText>(R.id.mascota)
         val registerButton = findViewById<Button>(R.id.button_registro)

@@ -2,22 +2,22 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="370dp"
-    android:layout_height="100dp"
+    android:layout_width="450dp"
+    android:layout_height="130dp"
     android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="550dp"
         android:layout_height="match_parent"
-        android:background="#90B58C68"
+        android:background="@color/brown_500"
         android:backgroundTint="#90B58C68"
         android:padding="16dp">
 
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/Nombre_producto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -27,68 +27,79 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.027"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.272" />
+            app:layout_constraintVertical_bias="0.364" />
 
         <TextView
-            android:id="@+id/textViewSubtitle"
+            android:id="@+id/Precio_Producto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewTitle"
-            android:layout_marginTop="8dp"
+            android:layout_below="@id/Nombre_producto"
+            android:layout_marginTop="5dp"
             android:text="$500.00"
             android:textColor="@color/brown_500"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.025"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/Nombre_producto" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/MasButton"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginStart="70dp"
             android:background="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewTitle"
+            app:layout_constraintStart_toEndOf="@+id/Nombre_producto"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/left" />
 
         <ImageButton
-            android:id="@+id/imageButton8"
+            android:id="@+id/EliminarButton"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginEnd="7dp"
             android:background="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/MenosButton"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/delete" />
 
         <ImageButton
-            android:id="@+id/imageButton9"
+            android:id="@+id/MenosButton"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:background="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton8"
+            app:layout_constraintEnd_toStartOf="@+id/EliminarButton"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/right" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/Cantidad_Stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="0"
             android:textColor="@color/brown_700"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton9"
-            app:layout_constraintStart_toEndOf="@+id/imageButton6"
+            app:layout_constraintEnd_toStartOf="@+id/MenosButton"
+            app:layout_constraintStart_toEndOf="@+id/MasButton"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/EditarButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="#00FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/EliminarButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/editar" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

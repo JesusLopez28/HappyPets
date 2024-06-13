@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val emailEditText = findViewById<EditText>(R.id.username)
-        val passwordEditText = findViewById<EditText>(R.id.password)
+        val passwordEditText = findViewById<EditText>(R.id.Stock_producto)
         val loginButton = findViewById<Button>(R.id.button)
         val forgotPasswordButton = findViewById<Button>(R.id.button2)
         val registrateButton = findViewById<Button>(R.id.button4)
