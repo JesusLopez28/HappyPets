@@ -14,7 +14,7 @@ class UserManager(context: Context) {
         editor.putString("user_${user.id}_telefono", user.telefono)
         editor.putString("user_${user.id}_password", user.password)
         editor.putString("user_${user.id}_direccion", user.direccion)
-        editor.putString("user_${user.id}_mascota", user.mascota)
+        editor.putString("user_${user.id}_mascota", user.mascota.toString())
         editor.putInt("user_${user.id}_type", user.type)
         editor.apply()
     }
@@ -30,7 +30,8 @@ class UserManager(context: Context) {
 
         return if (nombre != null && email != null && telefono != null && password != null &&
             direccion != null && mascota != null && type != -1) {
-            Usuario(id, nombre, email, telefono, password, direccion, mascota, type)
+            val mascotaList = arrayListOf<Mascotas>()
+            Usuario(id, nombre, email, telefono, password, direccion, mascotaList, type)
         } else {
             null
         }
@@ -59,5 +60,20 @@ class UserManager(context: Context) {
             }
         }
         return users
+    }
+
+    fun getMascotasByEmail(email: String): List<Mascotas> {
+        val allEntries = sharedPreferences.all
+        for ((key, value) in allEntries) {
+            if (key.endsWith("_email") && value == email) {
+                val id = key.split("_")[1].toInt()
+                val mascota = sharedPreferences.getString("user_${id}_mascota", null)
+                if (mascota != null) {
+
+
+                }
+            }
+        }
+        return emptyList()
     }
 }

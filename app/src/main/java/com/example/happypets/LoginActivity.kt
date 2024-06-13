@@ -67,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Intent(this, MainActivity2::class.java)
             }
+            intent.putExtra("email", email)
             startActivity(intent)
         } else {
             showToast("Contraseña o Email incorrecto")

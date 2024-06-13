@@ -83,7 +83,14 @@ class RegistroActivity : AppCompatActivity() {
         mascota: String
     ) {
         val id = userManager.getAllUsers().size + 1
-        val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, mascota)
+        val mascota = Mascotas(mascota, "Desconocida", 0, id)
+        val type = if (userManager.getAllUsers().isEmpty()) 2 else 1
+        val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, type)
+        val agregado = nuevoUsuario.agregarMascota(mascota)
+        if (!agregado) {
+            showToast("Error al agregar mascota")
+            return
+        }
         userManager.saveUser(nuevoUsuario)
         showToast("Usuario registrado correctamente")
         navigateToLogin(nombre, email)
