@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation_2"
-    app:startDestination="@id/productosFragment">
+    app:startDestination="@id/navigation_productos">
 
     <fragment
-        android:id="@+id/productosFragment"
+        android:id="@+id/navigation_productos"
         android:name="com.example.happypets.ui.productos.ProductosFragment"
         android:label="fragment_productos"
         tools:layout="@layout/fragment_productos" />
     <fragment
-        android:id="@+id/usuariosFragment"
+        android:id="@+id/navigation_usuarios"
         android:name="com.example.happypets.ui.usuarios.UsuariosFragment"
         android:label="fragment_usuarios"
         tools:layout="@layout/fragment_usuarios" />
     <fragment
-        android:id="@+id/citasAdminFragment"
+        android:id="@+id/navigation_citas_admin"
         android:name="com.example.happypets.ui.citas_admin.CitasAdminFragment"
         android:label="fragment_citas_admin"
         tools:layout="@layout/fragment_citas_admin" />
     <fragment
-        android:id="@+id/perfilAdminFragment"
+        android:id="@+id/navigation_perfil_admin"
         android:name="com.example.happypets.ui.perfil_admin.PerfilAdminFragment"
         android:label="fragment_perfil_admin"
         tools:layout="@layout/fragment_perfil_admin" />
