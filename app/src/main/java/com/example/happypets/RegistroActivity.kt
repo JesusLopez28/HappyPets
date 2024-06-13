@@ -7,46 +7,97 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-
-
 class RegistroActivity : AppCompatActivity() {
+
+    private lateinit var nombreEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var telefonoEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var direccionEditText: EditText
+    private lateinit var mascotaEditText: EditText
+    private lateinit var registerButton: Button
+
+    private lateinit var userManager: UserManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
 
-        val nombreEditText = findViewById<EditText>(R.id.nombre)
-        val emailEditText = findViewById<EditText>(R.id.email)
-        val telefonoEditText = findViewById<EditText>(R.id.Precio_producto)
-        val passwordEditText = findViewById<EditText>(R.id.Stock_producto)
-        val direccionEditText = findViewById<EditText>(R.id.direccion)
-        val mascotaEditText = findViewById<EditText>(R.id.mascota)
-        val registerButton = findViewById<Button>(R.id.button_registro)
+        initViews()
+        userManager = UserManager(this)
 
-        val userManager = UserManager(this)
+        registerButton.setOnClickListener { handleRegister() }
+    }
 
-        registerButton.setOnClickListener {
-            val nombre = nombreEditText.text.toString()
-            val email = emailEditText.text.toString()
-            val telefono = telefonoEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            val direccion = direccionEditText.text.toString()
-            val mascota = mascotaEditText.text.toString()
+    private fun initViews() {
+        nombreEditText = findViewById(R.id.nombre)
+        emailEditText = findViewById(R.id.email)
+        telefonoEditText = findViewById(R.id.Precio_producto)
+        passwordEditText = findViewById(R.id.Stock_producto)
+        direccionEditText = findViewById(R.id.direccion)
+        mascotaEditText = findViewById(R.id.mascota)
+        registerButton = findViewById(R.id.button_registro)
+    }
 
-            if (nombre.isNotEmpty() && email.isNotEmpty() && telefono.isNotEmpty() && password.isNotEmpty() &&
-                direccion.isNotEmpty() && mascota.isNotEmpty()) {
-                val id = userManager.getAllUsers().size + 1
-                val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, mascota)
-                userManager.saveUser(nuevoUsuario)
-                Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("nombre", nombre)
-                intent.putExtra("email", email)
-                startActivity(intent)
+    private fun handleRegister() {
+        val nombre = nombreEditText.text.toString()
+        val email = emailEditText.text.toString()
+        val telefono = telefonoEditText.text.toString()
+        val password = passwordEditText.text.toString()
+        val direccion = direccionEditText.text.toString()
+        val mascota = mascotaEditText.text.toString()
+
+        if (validateInputs(nombre, email, telefono, password, direccion, mascota)) {
+            if (!validateEmail(email)) {
+                showToast("Email no válido")
+            } else if (!validatePhone(telefono)) {
+                showToast("Teléfono no válido")
             } else {
-                Toast.makeText(this, "Por favor revisar todos los campos", Toast.LENGTH_SHORT).show()
+                registerUser(nombre, email, telefono, password, direccion, mascota)
             }
+        } else {
+            showToast("Por favor revisar todos los campos")
         }
     }
-}
 
+    private fun validateInputs(vararg inputs: String): Boolean {
+        return inputs.all { it.isNotEmpty() }
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return email.matches(emailPattern.toRegex())
+    }
+
+    private fun validatePhone(phone: String): Boolean {
+        val phonePattern = "[0-9]{10}"
+        return phone.matches(phonePattern.toRegex())
+    }
+
+    private fun registerUser(
+        nombre: String,
+        email: String,
+        telefono: String,
+        password: String,
+        direccion: String,
+        mascota: String
+    ) {
+        val id = userManager.getAllUsers().size + 1
+        val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, mascota)
+        userManager.saveUser(nuevoUsuario)
+        showToast("Usuario registrado correctamente")
+        navigateToLogin(nombre, email)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigateToLogin(nombre: String, email: String) {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            putExtra("nombre", nombre)
+            putExtra("email", email)
+        }
+        startActivity(intent)
+    }
+}

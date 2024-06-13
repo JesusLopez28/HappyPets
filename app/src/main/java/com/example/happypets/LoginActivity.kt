@@ -9,47 +9,59 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var forgotPasswordButton: Button
+    private lateinit var registrateButton: Button
+
+    private lateinit var userManager: UserManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val emailEditText = findViewById<EditText>(R.id.username)
-        val passwordEditText = findViewById<EditText>(R.id.Stock_producto)
-        val loginButton = findViewById<Button>(R.id.button)
-        val forgotPasswordButton = findViewById<Button>(R.id.button2)
-        val registrateButton = findViewById<Button>(R.id.button4)
+        initViews()
+        userManager = UserManager(this)
 
-        val userManager = UserManager(this)
+        loginButton.setOnClickListener { handleLogin() }
+        forgotPasswordButton.setOnClickListener { navigateToRecuperacion() }
+        registrateButton.setOnClickListener { navigateToRegistro() }
+    }
 
-        loginButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
+    private fun initViews() {
+        emailEditText = findViewById(R.id.username)
+        passwordEditText = findViewById(R.id.Stock_producto)
+        loginButton = findViewById(R.id.button)
+        forgotPasswordButton = findViewById(R.id.button2)
+        registrateButton = findViewById(R.id.button4)
+    }
 
-            val user = userManager.getUserByEmail(email)
+    private fun handleLogin() {
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
 
-            if (user != null) {
-                login(email, password, user.type)
-            } else {
-                Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
-            }
-        }
+        val user = userManager.getUserByEmail(email)
 
-        forgotPasswordButton.setOnClickListener {
-            val intent = Intent(this, RecuperacionActivity::class.java)
-            startActivity(intent)
-        }
-
-        registrateButton.setOnClickListener{
-            val intent = Intent(this, RegistroActivity::class.java)
-            startActivity(intent)
+        if (user != null) {
+            login(email, password, user.type)
+        } else {
+            showToast("Usuario no encontrado")
         }
     }
 
-    fun login(email: String, password: String, userType: Int) {
-        val userManager = UserManager(this)
+    private fun navigateToRecuperacion() {
+        startActivity(Intent(this, RecuperacionActivity::class.java))
+    }
+
+    private fun navigateToRegistro() {
+        startActivity(Intent(this, RegistroActivity::class.java))
+    }
+
+    private fun login(email: String, password: String, userType: Int) {
         val user = userManager.getUserByEmail(email)
         if (user != null && user.password == password && user.type == userType) {
-            Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
+            showToast("Bienvenido!!")
             val intent = if (userType == 1) {
                 Intent(this, MainActivity::class.java)
             } else {
@@ -57,8 +69,11 @@ class LoginActivity : AppCompatActivity() {
             }
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
+            showToast("Contraseña o Email incorrecto")
         }
     }
-}
 
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+}
