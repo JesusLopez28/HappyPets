@@ -41,7 +41,7 @@
             app:layout_constraintVertical_bias="0.644">
 
             <EditText
-                android:id="@+id/Nombre_producto"
+                android:id="@+id/Nombre_Producto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -70,7 +70,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Nombre_producto" />
+                app:layout_constraintTop_toBottomOf="@+id/Nombre_Producto" />
 
             <EditText
                 android:id="@+id/Precio_producto"

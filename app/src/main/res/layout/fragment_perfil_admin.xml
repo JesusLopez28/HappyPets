@@ -64,13 +64,15 @@
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_marginTop="125dp"
+            android:background="#72FFEDD8"
+            android:src="@drawable/huellita"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout2"
-            tools:src="@tools:sample/avatars" />
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

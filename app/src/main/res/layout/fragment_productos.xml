@@ -11,20 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="120dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="68dp"
-            android:textAlignment="inherit"
-            android:textColor="@color/brown_700"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.144"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Productos" />
-
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="142dp"
@@ -34,14 +20,27 @@
             android:src="@drawable/huellita"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="113dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="104dp"
+            android:text="Productos"
+            android:textColor="@color/brown_700"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintHorizontal_bias="0.326"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_Productos"
-            android:layout_width="346dp"
-            android:layout_height="446dp"
-            android:layout_marginTop="1dp"
+            android:layout_width="363dp"
+            android:layout_height="450dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +50,7 @@
             android:id="@+id/AgregarProductoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:clickable="true"
@@ -59,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView_Productos"
-            app:layout_constraintVertical_bias="0.16" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
