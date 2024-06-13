@@ -26,20 +26,11 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             val user = userManager.getUserByEmail(email)
-            if (user != null && user.password == password) {
-                Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
-            }
 
-            if (user != null && user.password == password && user.type == 2) {
-                Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity2::class.java)
-                startActivity(intent)
+            if (user != null) {
+                login(email, password, user.type)
             } else {
-                Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -51,6 +42,22 @@ class LoginActivity : AppCompatActivity() {
         registrateButton.setOnClickListener{
             val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    fun login(email: String, password: String, userType: Int) {
+        val userManager = UserManager(this)
+        val user = userManager.getUserByEmail(email)
+        if (user != null && user.password == password && user.type == userType) {
+            Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
+            val intent = if (userType == 1) {
+                Intent(this, MainActivity::class.java)
+            } else {
+                Intent(this, MainActivity2::class.java)
+            }
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
         }
     }
 }
