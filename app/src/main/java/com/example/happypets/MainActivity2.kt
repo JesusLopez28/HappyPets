@@ -27,9 +27,5 @@ class MainActivity2 : AppCompatActivity() {
 
         val email = intent.getStringExtra("email")
         val user = UserManager(this).getUserByEmail(email!!)
-        val useStr = user?.userToString()
-        Toast.makeText(this, useStr, Toast.LENGTH_SHORT).show()
-        // Imrimir en consola tambien
-        println(useStr)
     }
 }
