@@ -25,12 +25,11 @@ class MainActivity2 : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
         navView.setupWithNavController(navController)
 
-        // Tomar el email del usuario del intent y enlazarlo con el email del usuario en las shared preferences
         val email = intent.getStringExtra("email")
-        val mascotas = UserManager(this).getMascotasByEmail(email!!)
-
-        for (mascota in mascotas) {
-            Toast.makeText(this, mascota.nombre, Toast.LENGTH_SHORT).show()
-        }
+        val user = UserManager(this).getUserByEmail(email!!)
+        val useStr = user?.userToString()
+        Toast.makeText(this, useStr, Toast.LENGTH_SHORT).show()
+        // Imrimir en consola tambien
+        println(useStr)
     }
 }

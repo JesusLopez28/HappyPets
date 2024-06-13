@@ -37,4 +37,13 @@ class Usuario {
         this.mascota.add(mascota)
         return true
     }
+
+    fun userToString(): String {
+        var strUser = "Usuario: $nombre\nEmail: $email\nTeléfono: $telefono\nDirección: $direccion\n"
+        for (mascota in mascota) {
+            strUser += "Mascota: ${mascota.nombre}\nRaza: ${mascota.raza}\nEdad: ${mascota.edad}\n\n"
+        }
+        strUser += "Tipo: ${if (type == 1) "Cliente" else "Administrador"}"
+        return strUser
+    }
 }
