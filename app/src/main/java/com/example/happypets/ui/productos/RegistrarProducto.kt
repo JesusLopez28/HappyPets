@@ -45,6 +45,16 @@ class RegistrarProducto : Fragment() {
             val categoria = categoriaSpinner.selectedItem.toString()
 
             if (nombre.isNotEmpty() && descripcion.isNotEmpty() && precio > 0 && stock >= 0 && categoria.isNotEmpty()) {
+                if (precio <= 0) {
+                    Toast.makeText(requireContext(), "El precio debe ser mayor a 0", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (stock < 0) {
+                    Toast.makeText(requireContext(), "El stock no puede ser negativo", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val producto = Producto(
                     id = productoManager.generateProductId(),
                     nombre = nombre,
