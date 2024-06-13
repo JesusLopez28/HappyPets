@@ -10,7 +10,7 @@ class Usuario {
     var password: String = ""
     var direccion: String = ""
     var mascota: ArrayList<Mascotas> = ArrayList()
-    var type: Int = 1
+    var type: Int = 0
 
     constructor(id: Int, nombre: String, email: String, telefono: String, password: String, direccion: String, type: Int) {
         this.id = id
