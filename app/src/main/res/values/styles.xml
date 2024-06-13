@@ -3,4 +3,16 @@
         <item name="android:textColor">@color/brown_500</item>
         <item name="android:padding">10dp</item>
     </style>
+
+    <style name="CustomDateTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/brown_500</item>
+    </style>
+
+    <style name="CustomWeekDayTextAppearance" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/brown_700</item>
+    </style>
+
+    <style name="CustomHeaderTextAppearance" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/brown_300</item>
+    </style>
 </resources>
