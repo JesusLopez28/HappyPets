@@ -8,5 +8,5 @@ data class Usuario(
     val password: String,
     val direccion: String,
     val mascota: String,
-    val type: Int = 1 // Asignar el valor 1 por defecto
+    val type: Int = 2 // Asignar el valor 1 por defecto
 )

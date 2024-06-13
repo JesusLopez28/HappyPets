@@ -33,6 +33,14 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
             }
+
+            if (user != null && user.password == password && user.type == 2) {
+                Toast.makeText(this, "Bienvenido!!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity2::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Contraseña o Email incorrecto", Toast.LENGTH_SHORT).show()
+            }
         }
 
         forgotPasswordButton.setOnClickListener {
