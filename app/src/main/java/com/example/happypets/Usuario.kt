@@ -33,6 +33,8 @@ class Usuario {
         this.type = type
     }
 
+    constructor()
+
     fun agregarMascota(mascota: Mascotas) : Boolean {
         this.mascota.add(mascota)
         return true

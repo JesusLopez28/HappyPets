@@ -36,7 +36,7 @@ class PerfilAdminFragment : Fragment() {
                 adminInfoTextView.text = "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\n"
                 // Iterar sobre las mascotas del usuario
                 admin.mascota.forEach { mascota ->
-                    adminInfoTextView.append("\nMascota: ${mascota.nombre}\nRaza: ${mascota.raza}\nEdad: ${mascota.edad}\n")
+                    adminInfoTextView.append("\nMascota: ${mascota.nombre} \n Raza: ${mascota.raza} - Edad: ${mascota.edad}\n")
                 }
                 adminRoleTextView.text = "${admin.nombre}"
             } ?: run {
