@@ -14,8 +14,15 @@ class UserManager(context: Context) {
         editor.putString("user_${user.id}_telefono", user.telefono)
         editor.putString("user_${user.id}_password", user.password)
         editor.putString("user_${user.id}_direccion", user.direccion)
-        editor.putString("user_${user.id}_mascota", user.mascota.toString())
         editor.putInt("user_${user.id}_type", user.type)
+
+        for ((index, mascota) in user.mascota.withIndex()) {
+            editor.putString("user_${user.id}_mascota_$index", mascota.nombre)
+            editor.putString("user_${user.id}_mascota_${index}_raza", mascota.raza)
+            editor.putInt("user_${user.id}_mascota_${index}_edad", mascota.edad)
+            editor.putInt("user_${user.id}_mascota_${index}_idUsuario", mascota.idUsuario)
+        }
+
         editor.apply()
     }
 
@@ -25,16 +32,35 @@ class UserManager(context: Context) {
         val telefono = sharedPreferences.getString("user_${id}_telefono", null)
         val password = sharedPreferences.getString("user_${id}_password", null)
         val direccion = sharedPreferences.getString("user_${id}_direccion", null)
-        val mascota = sharedPreferences.getString("user_${id}_mascota", null)
         val type = sharedPreferences.getInt("user_${id}_type", -1)
 
-        return if (nombre != null && email != null && telefono != null && password != null &&
-            direccion != null && mascota != null && type != -1) {
-            val mascotaList = arrayListOf<Mascotas>()
-            Usuario(id, nombre, email, telefono, password, direccion, mascotaList, type)
-        } else {
-            null
+        val mascotaList = ArrayList<Mascotas>()
+        var index = 0
+        while (true) {
+            val mascotaNombre =
+                sharedPreferences.getString("user_${id}_mascota_$index", null) ?: break
+            val mascotaRaza =
+                sharedPreferences.getString("user_${id}_mascota_${index}_raza", null) ?: break
+            val mascotaEdad = sharedPreferences.getInt("user_${id}_mascota_${index}_edad", -1)
+            val mascotaIdUsuario =
+                sharedPreferences.getInt("user_${id}_mascota_${index}_idUsuario", -1)
+            if (mascotaEdad == -1 || mascotaIdUsuario == -1) {
+                break
+            }
+            mascotaList.add(Mascotas(mascotaNombre, mascotaRaza, mascotaEdad, mascotaIdUsuario))
+            index++
         }
+        return Usuario(
+            id,
+            nombre ?: return null,
+            email ?: return null,
+            telefono ?: return null,
+            password ?: return null,
+            direccion ?: return null,
+            mascotaList,
+            type
+        )
+
     }
 
     fun getUserByEmail(email: String): Usuario? {
@@ -51,7 +77,8 @@ class UserManager(context: Context) {
     fun getAllUsers(): List<Usuario> {
         val users = mutableListOf<Usuario>()
         val allEntries = sharedPreferences.all
-        val userIds = allEntries.keys.filter { it.endsWith("_nombre") }.map { it.split("_")[1].toInt() }
+        val userIds =
+            allEntries.keys.filter { it.endsWith("_nombre") }.map { it.split("_")[1].toInt() }
 
         for (id in userIds) {
             val user = getUserById(id)
@@ -69,7 +96,12 @@ class UserManager(context: Context) {
         editor.putString("user_${user.id}_telefono", user.telefono)
         editor.putString("user_${user.id}_password", user.password)
         editor.putString("user_${user.id}_direccion", user.direccion)
-        editor.putString("user_${user.id}_mascota", user.mascota.toString())
+        for ((index, mascota) in user.mascota.withIndex()) {
+            editor.putString("user_${user.id}_mascota_$index", mascota.nombre)
+            editor.putString("user_${user.id}_mascota_${index}_raza", mascota.raza)
+            editor.putInt("user_${user.id}_mascota_${index}_edad", mascota.edad)
+            editor.putInt("user_${user.id}_mascota_${index}_idUsuario", mascota.idUsuario)
+        }
         editor.putInt("user_${user.id}_type", user.type)
         editor.apply()
     }
@@ -81,8 +113,13 @@ class UserManager(context: Context) {
         editor.remove("user_${id}_telefono")
         editor.remove("user_${id}_password")
         editor.remove("user_${id}_direccion")
-        editor.remove("user_${id}_mascota")
         editor.remove("user_${id}_type")
+        for ((index, mascota) in getUserById(id)?.mascota?.withIndex()!!) {
+            editor.remove("user_${id}_mascota_$index")
+            editor.remove("user_${id}_mascota_${index}_raza")
+            editor.remove("user_${id}_mascota_${index}_edad")
+            editor.remove("user_${id}_mascota_${index}_idUsuario")
+        }
         editor.apply()
     }
 }
