@@ -2,8 +2,10 @@ package com.example.happypets
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,6 +18,8 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var direccionEditText: EditText
     private lateinit var mascotaEditText: EditText
     private lateinit var registerButton: Button
+    private lateinit var edadMascotaEditText: EditText
+    private lateinit var razaMascotaSpinner: Spinner
 
     private lateinit var userManager: UserManager
 
@@ -37,6 +41,16 @@ class RegistroActivity : AppCompatActivity() {
         direccionEditText = findViewById(R.id.direccion)
         mascotaEditText = findViewById(R.id.mascota)
         registerButton = findViewById(R.id.button_registro)
+        edadMascotaEditText = findViewById(R.id.edad)
+        razaMascotaSpinner = findViewById(R.id.spinner_raza)
+
+        val razaAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.raza,
+            android.R.layout.simple_spinner_item
+        )
+
+        razaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
     private fun handleRegister() {
@@ -46,14 +60,16 @@ class RegistroActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString()
         val direccion = direccionEditText.text.toString()
         val mascota = mascotaEditText.text.toString()
+        val edad = edadMascotaEditText.text.toString()
+        val raza = razaMascotaSpinner.selectedItem.toString()
 
-        if (validateInputs(nombre, email, telefono, password, direccion, mascota)) {
+        if (validateInputs(nombre, email, telefono, password, direccion, mascota, edad, raza)) {
             if (!validateEmail(email)) {
                 showToast("Email no válido")
             } else if (!validatePhone(telefono)) {
                 showToast("Teléfono no válido")
             } else {
-                registerUser(nombre, email, telefono, password, direccion, mascota)
+                registerUser(nombre, email, telefono, password, direccion, mascota, edad, raza)
             }
         } else {
             showToast("Por favor revisar todos los campos")
@@ -80,10 +96,12 @@ class RegistroActivity : AppCompatActivity() {
         telefono: String,
         password: String,
         direccion: String,
-        mascota: String
+        mascota: String,
+        edad: String,
+        raza: String
     ) {
         val id = userManager.getAllUsers().size + 1
-        val mascota = Mascotas(mascota, "Desconocida", 0, id)
+        val mascota = Mascotas(mascota, raza, edad.toInt(), id)
         val type = if (userManager.getAllUsers().isEmpty()) 2 else 1
         val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, type)
         val agregado = nuevoUsuario.agregarMascota(mascota)
