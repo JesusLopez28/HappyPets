@@ -44,6 +44,7 @@ class RegistroActivity : AppCompatActivity() {
         edadMascotaEditText = findViewById(R.id.edad)
         razaMascotaSpinner = findViewById(R.id.spinner_raza)
 
+        // LLenar spinner_raza
         val razaAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.raza,
@@ -51,6 +52,7 @@ class RegistroActivity : AppCompatActivity() {
         )
 
         razaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        razaMascotaSpinner.adapter = razaAdapter
     }
 
     private fun handleRegister() {
