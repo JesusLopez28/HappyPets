@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="@+id/constraintLayout2">
 
             <TextView
-                android:id="@+id/InformacionUsuario"
+                android:id="@+id/textView6"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="84dp"
@@ -57,7 +57,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/InformacionUsuario" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
