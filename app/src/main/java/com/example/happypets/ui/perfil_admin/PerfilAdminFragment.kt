@@ -27,8 +27,7 @@ class PerfilAdminFragment : Fragment() {
         val adminInfoTextView: TextView = view.findViewById(R.id.adminInfoTextView)
         val adminRoleTextView: TextView = view.findViewById(R.id.adminRoleTextView)
 
-        val email = arguments?.getString("email")
-        Log.d("PerfilAdminFragment", "Email received: $email")
+        val email = requireActivity().intent.getStringExtra("email")
 
         email?.let {
             val user = userManager.getUserByEmail(it)
