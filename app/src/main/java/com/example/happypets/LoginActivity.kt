@@ -74,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
