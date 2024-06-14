@@ -9,7 +9,11 @@
         android:id="@+id/navigation_catalogo"
         android:name="com.example.happypets.ui.catalogo.CatalogoFragment"
         android:label="Catálogo"
-        tools:layout="@layout/fragment_catalogo" />
+        tools:layout="@layout/fragment_catalogo">
+        <action
+            android:id="@+id/action_navigation_catalogo_to_productoUsuarioFragment"
+            app:destination="@id/productoUsuarioFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_carrito"
@@ -29,4 +33,9 @@
         android:label="Perfil"
         tools:layout="@layout/fragment_perfil" />
 
+    <fragment
+        android:id="@+id/productoUsuarioFragment"
+        android:name="com.example.happypets.ui.catalogo.ProductoUsuarioFragment"
+        android:label="Producto Usuario"
+        tools:layout="@layout/fragment_producto_usuario" />
 </navigation>

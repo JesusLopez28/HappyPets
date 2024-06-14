@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.happypets.Producto
 import com.example.happypets.ProductoAdapterUser
 import com.example.happypets.ProductoManager
+import com.example.happypets.R
 import com.example.happypets.databinding.FragmentCatalogoBinding
 
-class CatalogoFragment : Fragment() {
+class CatalogoFragment : Fragment(), ProductoAdapterUser.ProductoClickListener {
 
     private var _binding: FragmentCatalogoBinding? = null
     private val binding get() = _binding!!
@@ -33,7 +35,7 @@ class CatalogoFragment : Fragment() {
         productosList = productoManager.getAllProducts()
         filteredList = productosList
 
-        productoAdapter = ProductoAdapterUser(filteredList)
+        productoAdapter = ProductoAdapterUser(filteredList, this)
 
         binding.RecyclerCatalogo1.apply {
             layoutManager = LinearLayoutManager(context)
@@ -61,11 +63,28 @@ class CatalogoFragment : Fragment() {
         return root
     }
 
+    override fun onProductoClick(producto: Producto) {
+        val bundle = Bundle().apply {
+            putInt("id", producto.id)
+            putString("nombre", producto.nombre)
+            putString("descripcion", producto.descripcion)
+            putDouble("precio", producto.precio)
+            putInt("stock", producto.stock)
+            putString("categoria", producto.categoria)
+        }
+        findNavController().navigate(R.id.action_navigation_catalogo_to_productoUsuarioFragment, bundle)
+    }
+
+    override fun onAgregarCarritoClick(position: Int) {
+        // Implementar lógica para agregar al carrito si es necesario
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+
 
 
 

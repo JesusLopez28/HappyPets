@@ -14,6 +14,7 @@ class ProductoAdapterUser(
 ) : RecyclerView.Adapter<ProductoAdapterUser.ProductoViewHolder>() {
 
     interface ProductoClickListener {
+        fun onProductoClick(producto: Producto)
         fun onAgregarCarritoClick(position: Int)
     }
 
@@ -34,14 +35,18 @@ class ProductoAdapterUser(
         holder.nombreTextView.text = producto.nombre
         holder.precioTextView.text = "$${producto.precio}"
 
-        // Load image from drawable resources using the product ID
+
         val imageResourceName = "producto_${producto.id}"
         val imageResourceId = holder.productoImageView.context.resources.getIdentifier(imageResourceName, "drawable", holder.productoImageView.context.packageName)
 
-        if (imageResourceId != 0) { // Check if resource exists
+        if (imageResourceId != 0) {
             holder.productoImageView.setImageResource(imageResourceId)
         } else {
-            holder.productoImageView.setImageResource(R.drawable.icono1)// Optional placeholder image
+            holder.productoImageView.setImageResource(R.drawable.icono1)
+        }
+
+        holder.itemView.setOnClickListener {
+            listener?.onProductoClick(producto)
         }
 
         holder.agregarCarritoButton.setOnClickListener {
@@ -56,6 +61,7 @@ class ProductoAdapterUser(
         notifyDataSetChanged()
     }
 }
+
 
 
 
