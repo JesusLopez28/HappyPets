@@ -33,8 +33,11 @@ class PerfilAdminFragment : Fragment() {
         email?.let {
             val user = userManager.getUserByEmail(it)
             user?.let { admin ->
-                adminInfoTextView.text = "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\nMascota: ${admin.mascota}\n"
-
+                adminInfoTextView.text = "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\n"
+                // Iterar sobre las mascotas del usuario
+                admin.mascota.forEach { mascota ->
+                    adminInfoTextView.append("\nMascota: ${mascota.nombre}\nRaza: ${mascota.raza}\nEdad: ${mascota.edad}\n")
+                }
                 adminRoleTextView.text = "${admin.nombre}"
             } ?: run {
                 Log.e("PerfilAdminFragment", "User not found for email: $email")
