@@ -11,24 +11,16 @@
         android:layout_height="match_parent">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="275dp"
-            android:background="@drawable/rounded_perfil_fondo"
+        <ImageView
+            android:id="@+id/imageView13"
+            android:layout_width="590dp"
+            android:layout_height="546dp"
+            android:layout_marginTop="-130dp"
+            android:src="@drawable/forma2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.642"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="394dp"
-                android:layout_height="302dp"
-                android:src="@drawable/fondo4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -39,18 +31,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout2">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/InformacionUsuario"
                 android:layout_width="189dp"
                 android:layout_height="189dp"
-                android:layout_marginTop="84dp"
+                android:layout_marginTop="116dp"
                 android:text="Info"
                 android:textAlignment="center"
-                android:textColor="@color/brown_500"
+                android:textColor="@color/beige_200"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.467"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/EmailUsuarioText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="138dp"
+                android:layout_marginTop="71dp"
+                android:layout_marginEnd="132dp"
+                android:text="TextView"
+                android:textColor="@color/beige_200"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,12 +67,13 @@
             android:id="@+id/imageView5"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_marginTop="125dp"
+            android:layout_marginTop="116dp"
             android:background="#72FFEDD8"
             android:src="@drawable/rounded_account_box_24"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
