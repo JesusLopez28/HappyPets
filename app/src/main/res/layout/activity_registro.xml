@@ -132,6 +132,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/direccion" />
 
+        <Spinner
+            android:id="@+id/spinner_raza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Raza"
+            android:padding="10dp"
+            android:textColor="@color/brown_500"
+            android:textColorHint="@color/brown_200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mascota" />
+
+        <EditText
+            android:id="@+id/edad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Edad de la mascota"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/brown_500"
+            android:textColorHint="@color/brown_200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_raza" />
+
         <Button
             android:id="@+id/button_registro"
             android:layout_width="310dp"
@@ -142,7 +173,7 @@
             android:text="Unirme ahora!"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mascota" />
+            app:layout_constraintTop_toBottomOf="@+id/edad" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
