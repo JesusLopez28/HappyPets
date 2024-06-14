@@ -8,12 +8,10 @@
     android:background="#ECC4A2"
     tools:context=".RegistroActivity">
 
-    <!-- Contenedor para los campos de registro -->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/registroContainer"
         android:layout_width="370dp"
-        android:layout_height="wrap_content"
+        android:layout_height="550dp"
         android:layout_marginBottom="44dp"
         android:background="@drawable/rounded_top_corners"
         android:orientation="vertical"
@@ -23,157 +21,166 @@
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Registrate!"
-            android:textColor="@color/brown_700"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/nombre"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Nombre"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Correo electrónico"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nombre" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/Precio_producto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Teléfono"
-            android:inputType="phone"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/Stock_producto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Precio_producto" />
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Registrate!"
+                        android:textColor="@color/brown_700"
+                        android:textSize="34sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/direccion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Dirección"
-            android:inputType="textPostalAddress"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Stock_producto" />
+                    <EditText
+                        android:id="@+id/nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Nombre"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <EditText
-            android:id="@+id/mascota"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Mascota"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/direccion" />
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Correo electrónico"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
-        <Spinner
-            android:id="@+id/spinner_raza"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Raza"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mascota" />
+                    <EditText
+                        android:id="@+id/Precio_producto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Teléfono"
+                        android:inputType="phone"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/email" />
 
-        <EditText
-            android:id="@+id/edad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_edittext"
-            android:hint="Edad de la mascota"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/brown_500"
-            android:textColorHint="@color/brown_200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_raza" />
+                    <EditText
+                        android:id="@+id/Stock_producto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Contraseña"
+                        android:inputType="textPassword"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Precio_producto" />
 
-        <Button
-            android:id="@+id/button_registro"
-            android:layout_width="310dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_buttons"
-            android:backgroundTint="@color/brown_700"
-            android:text="Unirme ahora!"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edad" />
+                    <EditText
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Dirección"
+                        android:inputType="textPostalAddress"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Stock_producto" />
+
+                    <EditText
+                        android:id="@+id/mascota"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Mascota"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/direccion" />
+
+                    <Spinner
+                        android:id="@+id/spinner_raza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Raza"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mascota" />
+
+                    <EditText
+                        android:id="@+id/edad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Edad de la mascota"
+                        android:inputType="number"
+                        android:padding="10dp"
+                        android:textColor="@color/brown_500"
+                        android:textColorHint="@color/brown_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_raza" />
+
+                    <Button
+                        android:id="@+id/button_registro"
+                        android:layout_width="310dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_buttons"
+                        android:backgroundTint="@color/brown_700"
+                        android:text="Unirme ahora!"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edad" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
