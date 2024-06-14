@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/item1" />
+            app:srcCompat="@drawable/producto_1" />
 
         <Button
             android:id="@+id/button3"

@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
+    implementation ("androidx.appcompat:appcompat:1.4.0")
     implementation("com.sun.mail:android-mail:1.6.6")
     implementation("com.sun.mail:android-activation:1.6.6")
     implementation("com.google.code.gson:gson:2.8.8")
