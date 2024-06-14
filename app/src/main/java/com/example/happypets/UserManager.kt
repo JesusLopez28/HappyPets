@@ -14,13 +14,8 @@ class UserManager(context: Context) {
         editor.putString("user_${user.id}_telefono", user.telefono)
         editor.putString("user_${user.id}_password", user.password)
         editor.putString("user_${user.id}_direccion", user.direccion)
+        editor.putString("user_${user.id}_mascota", user.mascota.toString())
         editor.putInt("user_${user.id}_type", user.type)
-        for ((index, mascota) in user.mascota.withIndex()) {
-            editor.putString("user_${user.id}_mascota_$index", mascota.nombre)
-            editor.putString("user_${user.id}_mascota_${index}_raza", mascota.raza)
-            editor.putInt("user_${user.id}_mascota_${index}_edad", mascota.edad)
-            editor.putInt("user_${user.id}_mascota_${index}_idUsuario", mascota.idUsuario)
-        }
         editor.apply()
     }
 
@@ -30,23 +25,16 @@ class UserManager(context: Context) {
         val telefono = sharedPreferences.getString("user_${id}_telefono", null)
         val password = sharedPreferences.getString("user_${id}_password", null)
         val direccion = sharedPreferences.getString("user_${id}_direccion", null)
+        val mascota = sharedPreferences.getString("user_${id}_mascota", null)
         val type = sharedPreferences.getInt("user_${id}_type", -1)
 
-        val mascotaList = ArrayList<Mascotas>()
-        var index = 0
-        while (true) {
-            val mascotaNombre = sharedPreferences.getString("user_${id}_mascota_$index", null) ?: break
-            val mascotaRaza = sharedPreferences.getString("user_${id}_mascota_${index}_raza", null) ?: break
-            val mascotaEdad = sharedPreferences.getInt("user_${id}_mascota_${index}_edad", -1)
-            val mascotaIdUsuario = sharedPreferences.getInt("user_${id}_mascota_${index}_idUsuario", -1)
-            if (mascotaEdad == -1 || mascotaIdUsuario == -1) {
-                break
-            }
-            mascotaList.add(Mascotas(mascotaNombre, mascotaRaza, mascotaEdad, mascotaIdUsuario))
-            index++
+        return if (nombre != null && email != null && telefono != null && password != null &&
+            direccion != null && mascota != null && type != -1) {
+            val mascotaList = arrayListOf<Mascotas>()
+            Usuario(id, nombre, email, telefono, password, direccion, mascotaList, type)
+        } else {
+            null
         }
-
-        return Usuario(id, nombre ?: return null, email ?: return null, telefono ?: return null, password ?: return null, direccion ?: return null, mascotaList, type)
     }
 
     fun getUserByEmail(email: String): Usuario? {
@@ -74,18 +62,27 @@ class UserManager(context: Context) {
         return users
     }
 
-    fun getMascotasByEmail(email: String): List<Mascotas> {
-        val allEntries = sharedPreferences.all
-        for ((key, value) in allEntries) {
-            if (key.endsWith("_email") && value == email) {
-                val id = key.split("_")[1].toInt()
-                val mascota = sharedPreferences.getString("user_${id}_mascota", null)
-                if (mascota != null) {
+    fun updateUser(user: Usuario) {
+        // Aquí actualizamos los datos del usuario en SharedPreferences
+        editor.putString("user_${user.id}_nombre", user.nombre)
+        editor.putString("user_${user.id}_email", user.email)
+        editor.putString("user_${user.id}_telefono", user.telefono)
+        editor.putString("user_${user.id}_password", user.password)
+        editor.putString("user_${user.id}_direccion", user.direccion)
+        editor.putString("user_${user.id}_mascota", user.mascota.toString())
+        editor.putInt("user_${user.id}_type", user.type)
+        editor.apply()
+    }
 
-
-                }
-            }
-        }
-        return emptyList()
+    fun removeUser(id: Int) {
+        // Aquí eliminamos al usuario de SharedPreferences
+        editor.remove("user_${id}_nombre")
+        editor.remove("user_${id}_email")
+        editor.remove("user_${id}_telefono")
+        editor.remove("user_${id}_password")
+        editor.remove("user_${id}_direccion")
+        editor.remove("user_${id}_mascota")
+        editor.remove("user_${id}_type")
+        editor.apply()
     }
 }

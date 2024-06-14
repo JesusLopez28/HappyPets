@@ -1,31 +1,42 @@
 package com.example.happypets.ui.usuarios
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.happypets.R
+import com.example.happypets.Usuario
+import com.example.happypets.UserManager
+import com.example.happypets.UsuarioAdapter
 
 class UsuariosFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = UsuariosFragment()
-    }
-
     private val viewModel: UsuariosViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_usuarios, container, false)
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_usuarios, container, false)
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_Usuarios)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Obtener la lista de usuarios usando UserManager
+        val userManager = UserManager(requireContext())
+        val usuarios = userManager.getAllUsers()
+
+        // Configurar el adaptador
+        val adapter = UsuarioAdapter(usuarios.toMutableList())
+        recyclerView.adapter = adapter
+
+        return view
     }
 }
+
+
+
