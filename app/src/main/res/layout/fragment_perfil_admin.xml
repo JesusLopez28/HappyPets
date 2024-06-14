@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/beige_100"
     tools:context=".ui.perfil_admin.PerfilAdminFragment" >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -34,12 +35,10 @@
             app:layout_constraintTop_toTopOf="@+id/constraintLayout2">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/InformacionUsuario"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="132dp"
                 android:layout_marginTop="84dp"
-                android:layout_marginEnd="138dp"
                 android:text="Info Admin "
                 android:textAlignment="center"
                 android:textColor="@color/brown_500"
@@ -58,7 +57,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/InformacionUsuario" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

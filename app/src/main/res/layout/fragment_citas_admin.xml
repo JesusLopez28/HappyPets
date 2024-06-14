@@ -37,9 +37,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="243dp"
-            android:layout_height="303dp"
+            android:id="@+id/CalendarioAdmin"
+            android:layout_width="279dp"
+            android:layout_height="299dp"
             android:layout_marginTop="16dp"
             android:dateTextAppearance="@style/CustomDateTextAppearance"
             android:focusedMonthDateColor="@color/brown_700"
@@ -49,24 +49,26 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/BuscarCitaButton"
             android:layout_width="250dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/rounded_buttons"
             android:text="Buscar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+            app:layout_constraintTop_toBottomOf="@+id/CalendarioAdmin" />
 
         <ListView
+            android:id="@+id/ListaCitasAdmin"
             android:layout_width="350dp"
-            android:layout_height="194dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
+            app:layout_constraintTop_toBottomOf="@+id/BuscarCitaButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

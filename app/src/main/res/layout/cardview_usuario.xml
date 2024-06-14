@@ -11,14 +11,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#90B58C68"
-        android:backgroundTint="#90B58C68"
+        android:background="@color/brown_300"
+        android:backgroundTint="@color/brown_300"
         android:padding="16dp">
 
 
         <TextView
             android:id="@+id/Nombre_Usuario"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:text="Usuario"
@@ -35,9 +35,10 @@
             android:id="@+id/toggleButton_admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="130dp"
-            android:background="@drawable/rounded_buttons"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/rounded_buttons_dark"
             android:text="ToggleButton"
+            android:textColor="@color/beige_200"
             android:textOff="User"
             android:textOn="Admin"
             app:layout_constraintBottom_toBottomOf="parent"
