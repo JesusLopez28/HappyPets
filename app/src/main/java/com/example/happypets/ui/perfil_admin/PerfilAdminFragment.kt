@@ -4,43 +4,48 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.happypets.R
 import com.example.happypets.UserManager
+import android.widget.TextView
+import android.util.Log
 
 class PerfilAdminFragment : Fragment() {
 
-    companion object {
-        private const val ARG_EMAIL = "email"
+    private lateinit var userManager: UserManager
 
-        fun newInstance(email: String) = PerfilAdminFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_EMAIL, email)
-            }
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        userManager = UserManager(requireContext())
     }
-
-    private val viewModel: PerfilAdminViewModel by viewModels()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_perfil_admin, container, false)
-        val email = arguments?.getString(ARG_EMAIL)
-        if (email != null) {
-            val userManager = UserManager(requireContext())
-            val adminUser = userManager.getUserByEmail(email)
-            if (adminUser != null) {
-                view.findViewById<TextView>(R.id.textView6).text = adminUser.nombre
-                view.findViewById<TextView>(R.id.textView7).text = adminUser.email
+        val adminInfoTextView: TextView = view.findViewById(R.id.adminInfoTextView)
+        val adminRoleTextView: TextView = view.findViewById(R.id.adminRoleTextView)
+
+        val email = arguments?.getString("email")
+        Log.d("PerfilAdminFragment", "Email received: $email")
+
+        email?.let {
+            val user = userManager.getUserByEmail(it)
+            user?.let { admin ->
+                adminInfoTextView.text = "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\nMascota: ${admin.mascota}\n"
+
+                adminRoleTextView.text = "${admin.nombre}"
+            } ?: run {
+                Log.e("PerfilAdminFragment", "User not found for email: $email")
             }
+        } ?: run {
+            Log.e("PerfilAdminFragment", "Email is null")
         }
+
         return view
     }
 }
+
+
 

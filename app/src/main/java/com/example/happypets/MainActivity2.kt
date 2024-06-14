@@ -3,9 +3,9 @@ package com.example.happypets
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.happypets.databinding.ActivityMain2Binding
-import com.example.happypets.ui.perfil_admin.PerfilAdminFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity2 : AppCompatActivity() {
@@ -20,21 +20,21 @@ class MainActivity2 : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main2)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main2) as NavHostFragment
+        val navController = navHostFragment.navController
         navView.setupWithNavController(navController)
 
         val email = intent.getStringExtra("email")
-        if (email != null) {
-            val user = UserManager(this).getUserByEmail(email)
-            if (user != null && user.type == 1) {  // Aseguramos que es un administrador
-                val fragment = PerfilAdminFragment.newInstance(email)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main2, fragment)
-                    .commit()
-            } else {
-                // Handle non-admin case or show a default fragment
-            }
-        }
+
+        // Paso el email a través del NavController
+        val navGraph = navController.navInflater.inflate(R.navigation.mobile_navigation2)
+        navGraph.setStartDestination(R.id.navigation_perfil_admin)
+        navController.setGraph(navGraph, Bundle().apply {
+            putString("email", email)
+        })
     }
 }
+
+
+
 

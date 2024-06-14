@@ -31,7 +31,12 @@
         android:id="@+id/navigation_perfil_admin"
         android:name="com.example.happypets.ui.perfil_admin.PerfilAdminFragment"
         android:label="fragment_perfil_admin"
-        tools:layout="@layout/fragment_perfil_admin" />
+        tools:layout="@layout/fragment_perfil_admin">
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/navigation_registrar_producto"
