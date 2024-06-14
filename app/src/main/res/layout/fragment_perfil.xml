@@ -20,6 +20,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="394dp"
+                android:layout_height="302dp"
+                android:src="@drawable/fondo4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +46,7 @@
                 android:layout_width="189dp"
                 android:layout_height="189dp"
                 android:layout_marginTop="84dp"
-                android:text="Info Admin "
+                android:text="Info"
                 android:textAlignment="center"
                 android:textColor="@color/brown_500"
                 app:layout_constraintEnd_toEndOf="parent"
