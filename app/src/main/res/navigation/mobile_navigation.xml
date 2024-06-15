@@ -25,7 +25,17 @@
         android:id="@+id/navigation_citas_user"
         android:name="com.example.happypets.ui.citas.CitasFragment"
         android:label="Citas"
-        tools:layout="@layout/fragment_citas" />
+        tools:layout="@layout/fragment_citas">
+        <action
+            android:id="@+id/action_navigation_citas_user_to_navigation_mostrar_citas"
+            app:destination="@id/navigation_mostrar_citas" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_mostrar_citas"
+        android:name="com.example.happypets.ui.citas.MostrarCitasFragment"
+        android:label="fragment_mostrar_citas"
+        tools:layout="@layout/fragment_mostrar_citas" />
 
     <fragment
         android:id="@+id/navigation_perfil"

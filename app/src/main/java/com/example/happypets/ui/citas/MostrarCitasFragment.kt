@@ -4,32 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.happypets.CitaManager
+import com.example.happypets.ProductoManager
+import com.example.happypets.R
 import com.example.happypets.databinding.FragmentMostrarCitasBinding
 
 class MostrarCitasFragment : Fragment() {
 
-    private var _binding: FragmentMostrarCitasBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var citaManager: CitaManager
+    private lateinit var listViewMisCitas: ListView
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentMostrarCitasBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        var view = inflater.inflate(R.layout.fragment_mostrar_citas, container, false)
+        listViewMisCitas = view.findViewById(R.id.ListViewMisCitas)
+        citaManager = CitaManager(requireContext())
+        val email = requireActivity().intent.getStringExtra("email")
+        val citas = citaManager.getCitasByEmail(requireContext(), email!!)
+        if (citas.isEmpty()) {
+            listViewMisCitas.adapter = null
+            Toast.makeText(requireContext(), "No hay citas para esta fecha", Toast.LENGTH_SHORT).show()
+            view = inflater.inflate(R.layout.fragment_citas_admin, container, false)
+            return view
+        }else {
+            val citasList = mutableListOf<String>()
+            for (cita in citas) {
+                val citaString = "Mascota: ${cita.mascota.nombre}, Fecha: ${cita.fecha}, Hora: ${cita.hora}"
+                citasList.add(citaString)
+            }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, citasList)
+            listViewMisCitas.adapter = adapter
+        }
+        return view
     }
 }

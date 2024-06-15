@@ -66,5 +66,28 @@ class CitaManager(context: Context) {
         return citas
     }
 
+    fun getCitasByEmail(context: Context, email: String): List<Cita> {
+        val citas = mutableListOf<Cita>()
+        val usuario = UserManager(context).getUserByEmail(email)
+        if (usuario != null) {
+            sharedPreferences.all.forEach { (key, value) ->
+                if (key.contains("cita_") && key.contains("_fecha")) {
+                    val citaId = key.split("_")[1].toInt()
+                    val storedUsuarioId = sharedPreferences.getInt("cita_${citaId}_usuario_id", 0)
+                    if (storedUsuarioId == usuario.id) {
+                        val fecha = sharedPreferences.getString("cita_${citaId}_fecha", "")
+                        val hora = sharedPreferences.getString("cita_${citaId}_hora", "")
+                        val mascotaName = sharedPreferences.getString("cita_${citaId}_mascota_name", "")
+                        val mascota = usuario.mascota.find { it.nombre == mascotaName }
+                        if (mascota != null) {
+                            citas.add(Cita(citaId, usuario, mascota, fecha!!, hora!!))
+                        }
+                    }
+                }
+            }
+        }
+        return citas
+    }
+
 
 }

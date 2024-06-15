@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.happypets.Cita
 import com.example.happypets.CitaManager
 import com.example.happypets.R
@@ -27,6 +28,7 @@ class CitasFragment : Fragment() {
     private lateinit var horarioSppiner: Spinner
     private lateinit var mascotaSpinner: Spinner
     private lateinit var agendarCitaButton: Button
+    private lateinit var misCitasButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,7 @@ class CitasFragment : Fragment() {
         horarioSppiner = view.findViewById(R.id.HorarioSpinner)
         mascotaSpinner = view.findViewById(R.id.MascotaSpinner)
         agendarCitaButton = view.findViewById(R.id.AgendarCitaButton)
+        misCitasButton = view.findViewById(R.id.MisCitasButton)
 
         val email = requireActivity().intent.getStringExtra("email")
         val usuario = email?.let { UserManager(requireContext()).getUserByEmail(it) }
@@ -54,7 +57,8 @@ class CitasFragment : Fragment() {
         }
 
         val horarios = Array(9) { i -> "${i + 10}:00" }
-        horarioSppiner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, horarios)
+        horarioSppiner.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, horarios)
 
         var selectedDate = ""
         calendarioUsuario.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -68,15 +72,24 @@ class CitasFragment : Fragment() {
 
             // Validar campos
             if (fecha.isEmpty() || hora.isEmpty() || mascota.isEmpty()) {
-                Toast.makeText(requireContext(), "Por favor, llene todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor, llene todos los campos",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
             // Validar que la fecha no sea anterior a la actual
             val currentDate = System.currentTimeMillis()
-            val selectedDateMillis = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fecha)?.time ?: 0
+            val selectedDateMillis =
+                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fecha)?.time ?: 0
             if (selectedDateMillis < currentDate) {
-                Toast.makeText(requireContext(), "La fecha seleccionada no puede ser anterior a la actual", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "La fecha seleccionada no puede ser anterior a la actual",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -86,6 +99,11 @@ class CitasFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Cita agendada", Toast.LENGTH_SHORT).show()
         }
+
+        misCitasButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_citas_user_to_navigation_mostrar_citas)
+        }
+
 
         return view
     }
