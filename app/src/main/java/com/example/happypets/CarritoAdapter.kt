@@ -6,13 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.happypets.databinding.CardviewProductoCarritoBinding
 
 class CarritoAdapter(
-    private var productos: List<Producto>
+    private var productos: List<Producto>,
+    private val listener: CarritoItemListener
 ) : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
-    class CarritoViewHolder(val binding: CardviewProductoCarritoBinding) : RecyclerView.ViewHolder(binding.root) {
+    interface CarritoItemListener {
+        fun onEliminarProductoClick(producto: Producto)
+    }
+
+    inner class CarritoViewHolder(val binding: CardviewProductoCarritoBinding) : RecyclerView.ViewHolder(binding.root) {
         val nombreTextView = binding.NombreProductoCarrito
         val precioTextView = binding.PrecioProductoCarrito
         val productoImageView = binding.imagenProductoCarrito
+        val eliminarProductoButton = binding.EliminarProductoCarrito
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
@@ -33,6 +39,10 @@ class CarritoAdapter(
         } else {
             holder.productoImageView.setImageResource(R.drawable.icono1)
         }
+
+        holder.eliminarProductoButton.setOnClickListener {
+            listener.onEliminarProductoClick(producto)
+        }
     }
 
     override fun getItemCount() = productos.size
@@ -42,3 +52,5 @@ class CarritoAdapter(
         notifyDataSetChanged()
     }
 }
+
+
