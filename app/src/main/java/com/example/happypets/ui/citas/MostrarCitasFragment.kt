@@ -29,8 +29,7 @@ class MostrarCitasFragment : Fragment() {
         val citas = citaManager.getCitasByEmail(requireContext(), email!!)
         if (citas.isEmpty()) {
             listViewMisCitas.adapter = null
-            Toast.makeText(requireContext(), "No hay citas para esta fecha", Toast.LENGTH_SHORT).show()
-            view = inflater.inflate(R.layout.fragment_citas_admin, container, false)
+            Toast.makeText(requireContext(), "No hay citas", Toast.LENGTH_SHORT).show()
             return view
         }else {
             val citasList = mutableListOf<String>()
