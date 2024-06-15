@@ -106,17 +106,17 @@ class CompraFragment : Fragment() {
             )
             val email = requireActivity().intent.getStringExtra("email")
 
-// Obtener el correo electrónico del usuario desde UserManager
+            // Obtener el correo electrónico del usuario desde UserManager
             val userManager = UserManager(requireContext())
             val usuario = email?.let { userManager.getUserByEmail(it) }
 
-// Verificar si se encontró un usuario para el email proporcionado
+            // Verificar si se encontró un usuario para el email proporcionado
             val usuarioEmail = usuario?.email ?: run {
                 Log.e("CompraFragment", "Usuario no encontrado para el email: $email")
                 return   // o realiza alguna acción alternativa en caso de no encontrar el usuario
             }
 
-// Envío de correo electrónico al usuario
+            // Envío de correo electrónico al usuario
             val emailSubject = "Compra realizada en Happy Pets"
             val emailBody = "Detalles de la compra:\n" +
                     "ID Compra: $idCompra\n" +
@@ -130,7 +130,7 @@ class CompraFragment : Fragment() {
 
             val mailSender = MailSender(usuarioEmail, emailSubject, emailBody)
 
-// Manejar el envío del correo dentro de un contexto coroutine
+            // Manejar el envío del correo dentro de un contexto coroutine
             lifecycleScope.launch {
                 try {
                     mailSender.send()
@@ -139,7 +139,7 @@ class CompraFragment : Fragment() {
                             "ID Compra: $idCompra\n"
                     Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
 
-                    // Limpiar campos y vaciar carrito
+
                     limpiarCampos()
                     carrito.productos.clear()
                     carrito.calcularSubTotal()
