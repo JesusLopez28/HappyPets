@@ -37,7 +37,7 @@
         android:layout_width="276dp"
         android:layout_height="300dp"
 
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:dateTextAppearance="@style/CustomDateTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
@@ -104,5 +104,17 @@
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MascotaSpinner" />
+
+    <Button
+        android:id="@+id/MisCitasButton"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:background="@drawable/rounded_buttons"
+        android:text="Mis Citas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/AgendarCitaButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
