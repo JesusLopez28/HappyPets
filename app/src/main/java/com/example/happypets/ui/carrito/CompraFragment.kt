@@ -1,7 +1,7 @@
 package com.example.happypets.ui.carrito
 
-import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +12,16 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.happypets.Carrito
 import com.example.happypets.CarritoManager
 import com.example.happypets.Compra
+import com.example.happypets.MailSender
 import com.example.happypets.R
-import com.example.happypets.databinding.FragmentCarritoBinding
+import com.example.happypets.UserManager
 import com.example.happypets.databinding.FragmentCompraBinding
-import org.w3c.dom.Text
+import kotlinx.coroutines.launch
 
 class CompraFragment : Fragment() {
 
@@ -103,22 +104,59 @@ class CompraFragment : Fragment() {
                 metodoPago,
                 tipoEnvio
             )
+            val email = requireActivity().intent.getStringExtra("email")
 
-            // Procesar la compra
-            val mensaje = "¡Compra pagada exitosamente!\n" +
-                    "ID Envio: $idCompra\n"
-            Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+// Obtener el correo electrónico del usuario desde UserManager
+            val userManager = UserManager(requireContext())
+            val usuario = email?.let { userManager.getUserByEmail(it) }
 
-            // Limpiar los campos y vaciar el carrito
-            limpiarCampos()
-            carrito.productos.clear()
-            carrito.calcularSubTotal()
-            carrito.calcularIVA()
-            carrito.calcularTotal()
+// Verificar si se encontró un usuario para el email proporcionado
+            val usuarioEmail = usuario?.email ?: run {
+                Log.e("CompraFragment", "Usuario no encontrado para el email: $email")
+                return   // o realiza alguna acción alternativa en caso de no encontrar el usuario
+            }
 
-            // findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
+// Envío de correo electrónico al usuario
+            val emailSubject = "Compra realizada en Happy Pets"
+            val emailBody = "Detalles de la compra:\n" +
+                    "ID Compra: $idCompra\n" +
+                    "Productos: ${carrito.productos.joinToString { it.nombre }}\n" +
+                    "Dirección de entrega: $direccion\n" +
+                    "Método de pago: $metodoPago\n" +
+                    "Tipo de envío: $tipoEnvio\n" +
+                    "Subtotal: ${carrito.subTotal}\n" +
+                    "IVA: ${carrito.iva}\n" +
+                    "Total: ${carrito.total}"
+
+            val mailSender = MailSender(usuarioEmail, emailSubject, emailBody)
+
+// Manejar el envío del correo dentro de un contexto coroutine
+            lifecycleScope.launch {
+                try {
+                    mailSender.send()
+                    // Éxito al enviar el correo
+                    val mensaje = "¡Compra pagada exitosamente!\n" +
+                            "ID Compra: $idCompra\n"
+                    Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+
+                    // Limpiar campos y vaciar carrito
+                    limpiarCampos()
+                    carrito.productos.clear()
+                    carrito.calcularSubTotal()
+                    carrito.calcularIVA()
+                    carrito.calcularTotal()
+
+                    // Navegar de regreso al carrito o a la pantalla deseada
+                    //findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Error al enviar el correo electrónico", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
     }
+
 
     private fun limpiarCampos() {
         Direccion.text.clear()
@@ -134,4 +172,5 @@ class CompraFragment : Fragment() {
         _binding = null
     }
 }
+
 
