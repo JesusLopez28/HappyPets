@@ -11,6 +11,19 @@
         android:layout_height="match_parent"
         android:background="@color/beige_100">
 
+
+        <ImageButton
+            android:id="@+id/AtrasMostrarCitasutton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="40dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.144"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/imageView21"
             android:layout_width="wrap_content"
@@ -31,6 +44,7 @@
             android:layout_marginTop="-150dp"
             android:src="@drawable/forma6"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,21 +52,19 @@
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="280dp"
+            android:layout_marginTop="104dp"
             android:text="Mis Citas"
             android:textColor="@color/brown_700"
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintHorizontal_bias="0.17"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="303dp"
-            android:layout_height="437dp"
-            android:layout_marginTop="52dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/rounded_top_corners_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
