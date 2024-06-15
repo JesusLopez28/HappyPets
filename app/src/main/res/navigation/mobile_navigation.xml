@@ -41,7 +41,17 @@
         android:id="@+id/navigation_perfil"
         android:name="com.example.happypets.ui.perfil.PerfilFragment"
         android:label="Perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil">
+        <action
+            android:id="@+id/action_navigation_perfil_to_navigation_mascotas"
+            app:destination="@id/navigation_mascotas" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_mascotas"
+        android:name="com.example.happypets.ui.perfil.MostarMascotasFragment"
+        android:label="Mascotas"
+        tools:layout="@layout/fragment_mostrar_mascotas" />
 
     <fragment
         android:id="@+id/productoUsuarioFragment"

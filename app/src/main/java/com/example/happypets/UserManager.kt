@@ -122,4 +122,15 @@ class UserManager(context: Context) {
         }
         editor.apply()
     }
+
+    fun getMascotasByEmail(context: Context, email: String): List<Mascotas> {
+        val user = getUserByEmail(email) ?: return emptyList()
+        return user.mascota
+    }
+
+    fun agregarMascota(id: Int, mascota: Mascotas) {
+        val user = getUserById(id) ?: return
+        user.agregarMascota(mascota)
+        updateUser(user)
+    }
 }
