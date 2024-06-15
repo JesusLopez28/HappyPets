@@ -35,13 +35,13 @@
 
             <TextView
                 android:id="@+id/InformacionUsuario"
-                android:layout_width="189dp"
+                android:layout_width="230dp"
                 android:layout_height="189dp"
                 android:layout_marginTop="116dp"
                 android:text="Info"
                 android:textAlignment="center"
                 android:textColor="@color/beige_200"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,8 @@
                 android:layout_marginEnd="132dp"
                 android:text="TextView"
                 android:textColor="@color/beige_200"
-                android:textSize="20sp"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
