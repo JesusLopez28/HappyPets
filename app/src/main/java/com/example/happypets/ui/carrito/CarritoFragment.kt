@@ -4,30 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.happypets.Carrito
+import com.example.happypets.CarritoManager
 import com.example.happypets.databinding.FragmentCarritoBinding
+import com.example.happypets.CarritoAdapter
 
 class CarritoFragment : Fragment() {
 
     private var _binding: FragmentCarritoBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var carritoAdapter: CarritoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val carritoViewModel =
-            ViewModelProvider(this).get(CarritoViewModel::class.java)
-
         _binding = FragmentCarritoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val carrito = CarritoManager.obtenerCarrito()
+
+        // Configurar el adaptador del RecyclerView
+        carritoAdapter = CarritoAdapter(carrito.productos)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = carritoAdapter
+        }
+
+        // Mostrar subtotal, IVA y total en la vista
+        binding.apply {
+            SubtotalCarrito.text = "$ ${String.format("%.2f", carrito.subTotal)}"
+            IvaCarrito.text = "$ ${String.format("%.2f", carrito.iva)}"
+            TotalCarrito.text = "$ ${String.format("%.2f", carrito.total)}"
+        }
 
         return root
     }
@@ -37,3 +50,5 @@ class CarritoFragment : Fragment() {
         _binding = null
     }
 }
+
+

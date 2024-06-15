@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.happypets.CarritoManager
 import com.example.happypets.Producto
 import com.example.happypets.ProductoAdapterUser
 import com.example.happypets.ProductoManager
@@ -76,7 +78,10 @@ class CatalogoFragment : Fragment(), ProductoAdapterUser.ProductoClickListener {
     }
 
     override fun onAgregarCarritoClick(position: Int) {
-        // Implementar lógica para agregar al carrito si es necesario
+        val producto = filteredList[position]
+        CarritoManager.agregarProducto(producto)
+        // Mostrar un mensaje al usuario de que el producto ha sido añadido
+        Toast.makeText(requireContext(), "${producto.nombre} añadido al carrito", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
@@ -84,6 +89,10 @@ class CatalogoFragment : Fragment(), ProductoAdapterUser.ProductoClickListener {
         _binding = null
     }
 }
+
+
+
+
 
 
 

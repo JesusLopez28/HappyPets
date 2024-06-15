@@ -35,7 +35,7 @@ class ProductoAdapterUser(
         holder.nombreTextView.text = producto.nombre
         holder.precioTextView.text = "$${producto.precio}"
 
-
+        // Load image from drawable resources using the product ID
         val imageResourceName = "producto_${producto.id}"
         val imageResourceId = holder.productoImageView.context.resources.getIdentifier(imageResourceName, "drawable", holder.productoImageView.context.packageName)
 
@@ -61,6 +61,8 @@ class ProductoAdapterUser(
         notifyDataSetChanged()
     }
 }
+
+
 
 
 
