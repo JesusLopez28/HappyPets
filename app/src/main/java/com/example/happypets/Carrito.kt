@@ -46,17 +46,17 @@ class Carrito {
         calcularTotal()
     }
 
-    private fun calcularSubTotal() {
+    fun calcularSubTotal() {
         subTotal = productos.sumByDouble { it.precio }
     }
 
-    private fun calcularIVA() {
+    fun calcularIVA() {
         // Supongamos que el IVA es del 16%
         val porcentajeIVA = 0.16
         iva = subTotal * porcentajeIVA
     }
 
-    private fun calcularTotal() {
+    fun calcularTotal() {
         total = subTotal + iva
     }
 }
