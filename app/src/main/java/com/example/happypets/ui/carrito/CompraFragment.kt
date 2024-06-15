@@ -94,9 +94,9 @@ class CompraFragment : Fragment() {
             Toast.makeText(requireContext(), "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
             return
         } else {
-            val idCompra = carrito.id+1
+            val idCompra = carrito.id + 1
 
-            val NuevaCompra = Compra(
+            val nuevaCompra = Compra(
                 idCompra,
                 carrito.productos,
                 direccion,
@@ -104,13 +104,19 @@ class CompraFragment : Fragment() {
                 tipoEnvio
             )
 
+            // Procesar la compra
             val mensaje = "¡Compra pagada exitosamente!\n" +
                     "ID Envio: $idCompra\n"
             Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
 
+            // Limpiar los campos y vaciar el carrito
             limpiarCampos()
+            carrito.productos.clear()
+            carrito.calcularSubTotal()
+            carrito.calcularIVA()
+            carrito.calcularTotal()
 
-            //findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
+            // findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
         }
     }
 
@@ -128,3 +134,4 @@ class CompraFragment : Fragment() {
         _binding = null
     }
 }
+
