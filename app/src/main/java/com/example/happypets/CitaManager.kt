@@ -46,5 +46,25 @@ class CitaManager(context: Context) {
         return citas
     }
 
+    // getAlCitas
+    fun getAllCitas(context: Context): List<Cita> {
+        val citas = mutableListOf<Cita>()
+        sharedPreferences.all.forEach { (key, value) ->
+            if (key.contains("cita_") && key.contains("_fecha")) {
+                val citaId = key.split("_")[1].toInt()
+                val fecha = sharedPreferences.getString("cita_${citaId}_fecha", "")
+                val hora = sharedPreferences.getString("cita_${citaId}_hora", "")
+                val usuarioId = sharedPreferences.getInt("cita_${citaId}_usuario_id", 0)
+                val usuario = UserManager(context).getUserById(usuarioId)
+                val mascotaName = sharedPreferences.getString("cita_${citaId}_mascota_name", "")
+                val mascota = usuario?.mascota?.find { it.nombre == mascotaName }
+                if (usuario != null && mascota != null) {
+                    citas.add(Cita(citaId, usuario, mascota, fecha!!, hora!!))
+                }
+            }
+        }
+        return citas
+    }
+
 
 }

@@ -51,17 +51,20 @@ class CitasAdminFragment : Fragment() {
                 return@setOnClickListener
             }
             // Ir llenado un adapter con las citas encontradas
+            val citasList = mutableListOf<String>()
             for (cita in citas) {
                 val citaString = "Usuario: ${cita.usuario.nombre}, Mascota: ${cita.mascota.nombre}, Hora: ${cita.hora}"
-                val adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    listOf(citaString)
-                )
-                listaCitas.adapter = adapter
+                citasList.add(citaString)
             }
+
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, citasList)
+            listaCitas.adapter = adapter
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }
