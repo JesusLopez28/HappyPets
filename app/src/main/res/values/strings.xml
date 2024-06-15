@@ -16,4 +16,19 @@
     </string-array>
 
 
+    <string-array name="metodos_pago">
+        <item>Metodo de Pago</item>
+        <item>Efectivo</item>
+        <item>Tarjeta Debito/Credito</item>
+        <item>Tienda de Conveniencia</item>
+    </string-array>
+
+    <string-array name="tipos_envio">
+        <item>Tipo de Envio</item>
+        <item>Envio Express (1 dia)</item>
+        <item>Envio Estandar (2-3 dias)</item>
+        <item>Retiro En Tienda</item>
+    </string-array>
+
+
 </resources>
