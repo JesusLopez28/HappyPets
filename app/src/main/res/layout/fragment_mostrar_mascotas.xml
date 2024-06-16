@@ -20,7 +20,6 @@
             android:layout_marginTop="50dp"
             android:background="#00FFFFFF"
             android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
             app:layout_constraintHorizontal_bias="0.418"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

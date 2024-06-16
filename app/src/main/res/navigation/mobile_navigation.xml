@@ -19,7 +19,7 @@
         android:id="@+id/navigation_carrito"
         android:name="com.example.happypets.ui.carrito.CarritoFragment"
         android:label="Carrito"
-        tools:layout="@layout/fragment_carrito" >
+        tools:layout="@layout/fragment_carrito">
         <action
             android:id="@+id/action_carritoFragment_to_compraFragment"
             app:destination="@id/compraFragment" />
@@ -39,7 +39,11 @@
         android:id="@+id/navigation_mostrar_citas"
         android:name="com.example.happypets.ui.citas.MostrarCitasFragment"
         android:label="fragment_mostrar_citas"
-        tools:layout="@layout/fragment_mostrar_citas" />
+        tools:layout="@layout/fragment_mostrar_citas">
+        <action
+            android:id="@+id/action_navigation_mostrar_citas_to_navigation_citas_user"
+            app:destination="@id/navigation_citas_user" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_perfil"
@@ -55,16 +59,29 @@
         android:id="@+id/navigation_mascotas"
         android:name="com.example.happypets.ui.perfil.MostarMascotasFragment"
         android:label="Mascotas"
-        tools:layout="@layout/fragment_mostrar_mascotas" />
+        tools:layout="@layout/fragment_mostrar_mascotas">
+        <action
+            android:id="@+id/action_navigation_mascotas_to_navigation_perfil"
+            app:destination="@id/navigation_perfil" />
+    </fragment>
 
     <fragment
         android:id="@+id/productoUsuarioFragment"
         android:name="com.example.happypets.ui.catalogo.ProductoUsuarioFragment"
         android:label="Producto Usuario"
-        tools:layout="@layout/fragment_producto_usuario" />
+        tools:layout="@layout/fragment_producto_usuario">
+        <action
+            android:id="@+id/action_productoUsuarioFragment_to_navigation_catalogo"
+            app:destination="@id/navigation_catalogo" />
+    </fragment>
+
     <fragment
         android:id="@+id/compraFragment"
         android:name="com.example.happypets.ui.carrito.CompraFragment"
         android:label="fragment_compra"
-        tools:layout="@layout/fragment_compra" />
+        tools:layout="@layout/fragment_compra">
+        <action
+            android:id="@+id/action_compraFragment_to_carritoFragment"
+            app:destination="@id/navigation_carrito" />
+    </fragment>
 </navigation>

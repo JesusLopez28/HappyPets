@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.happypets.Producto
 import com.example.happypets.ProductoManager
 import com.example.happypets.R
@@ -26,6 +27,12 @@ class RegistrarProducto : Fragment() {
         val stockEditText: EditText = view.findViewById(R.id.Stock_producto)
         val categoriaSpinner: Spinner = view.findViewById(R.id.spinner_categoria)
         val agregarButton: Button = view.findViewById(R.id.button_registro)
+        val atrasAgregarProductoButton: ImageButton =
+            view.findViewById(R.id.AtrasAgregarProductoButton)
+
+        atrasAgregarProductoButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_registrar_producto_to_navigation_productos)
+        }
 
         productoManager = ProductoManager(requireContext())
 
@@ -33,7 +40,8 @@ class RegistrarProducto : Fragment() {
         val categorias = arrayOf("Alimento", "Juguetes", "Ropa", "Salud", "Hogar", "Paseo")
 
         // Configurar el Spinner de categorías
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categorias)
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categorias)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categoriaSpinner.adapter = adapter
 
@@ -46,12 +54,20 @@ class RegistrarProducto : Fragment() {
 
             if (nombre.isNotEmpty() && descripcion.isNotEmpty() && precio > 0 && stock >= 0 && categoria.isNotEmpty()) {
                 if (precio <= 0) {
-                    Toast.makeText(requireContext(), "El precio debe ser mayor a 0", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "El precio debe ser mayor a 0",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
                 }
 
                 if (stock < 0) {
-                    Toast.makeText(requireContext(), "El stock no puede ser negativo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "El stock no puede ser negativo",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
                 }
 
@@ -64,10 +80,18 @@ class RegistrarProducto : Fragment() {
                     categoria = categoria
                 )
                 productoManager.saveProduct(producto)
-                Toast.makeText(requireContext(), "Producto agregado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Producto agregado exitosamente",
+                    Toast.LENGTH_SHORT
+                ).show()
                 clearFields()
             } else {
-                Toast.makeText(requireContext(), "Por favor completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Por favor completa todos los campos correctamente",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

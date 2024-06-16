@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.happypets.Mascotas
 import com.example.happypets.R
 import com.example.happypets.UserManager
@@ -22,6 +24,7 @@ class MostarMascotasFragment : Fragment() {
     private lateinit var razaMascota: Spinner
     private lateinit var edadMascota: EditText
     private lateinit var agregarMascotaButton: Button
+    private lateinit var atrasMostrasMascotasButton: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,11 @@ class MostarMascotasFragment : Fragment() {
         razaMascota = view.findViewById(R.id.spinner_raza_Mascota)
         edadMascota = view.findViewById(R.id.edad_Mascota)
         agregarMascotaButton = view.findViewById(R.id.AgregarMascotaButton)
+        atrasMostrasMascotasButton = view.findViewById(R.id.AtrasMostrasMascotasButton)
+
+        atrasMostrasMascotasButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_mascotas_to_navigation_perfil)
+        }
 
         val razaAdapter = ArrayAdapter.createFromResource(
             requireContext(),

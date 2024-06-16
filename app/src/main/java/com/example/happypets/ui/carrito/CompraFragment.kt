@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +33,7 @@ class CompraFragment : Fragment() {
     private lateinit var SubtotalCompra: TextView
     private lateinit var IvaCompra: TextView
     private lateinit var TotalCompra: TextView
+    private lateinit var atrasCompraButton : ImageButton
 
     private lateinit var carrito: Carrito
 
@@ -54,6 +56,7 @@ class CompraFragment : Fragment() {
         SubtotalCompra = binding.SubtotalCompra
         IvaCompra = binding.IvaCompra
         TotalCompra = binding.TotalCompra
+        atrasCompraButton = binding.AtrasCompraButton
 
         carrito = CarritoManager.obtenerCarrito()
 
@@ -81,6 +84,10 @@ class CompraFragment : Fragment() {
 
         ButtonPagar.setOnClickListener {
             PagarCompra()
+        }
+
+        atrasCompraButton.setOnClickListener(){
+            findNavController().navigate(R.id.action_compraFragment_to_carritoFragment)
         }
 
         return view

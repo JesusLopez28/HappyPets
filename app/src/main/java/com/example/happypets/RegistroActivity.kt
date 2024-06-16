@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var registerButton: Button
     private lateinit var edadMascotaEditText: EditText
     private lateinit var razaMascotaSpinner: Spinner
+    private lateinit var atrasRegistrarteButton: ImageButton
 
     private lateinit var userManager: UserManager
 
@@ -31,6 +33,10 @@ class RegistroActivity : AppCompatActivity() {
         userManager = UserManager(this)
 
         registerButton.setOnClickListener { handleRegister() }
+
+        atrasRegistrarteButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
     }
 
     private fun initViews() {
@@ -43,6 +49,7 @@ class RegistroActivity : AppCompatActivity() {
         registerButton = findViewById(R.id.button_registro)
         edadMascotaEditText = findViewById(R.id.edad)
         razaMascotaSpinner = findViewById(R.id.spinner_raza)
+        atrasRegistrarteButton = findViewById(R.id.AtrasRegistrarteButton)
 
         // LLenar spinner_raza
         val razaAdapter = ArrayAdapter.createFromResource(

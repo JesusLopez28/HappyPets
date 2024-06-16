@@ -42,6 +42,12 @@
         android:id="@+id/navigation_registrar_producto"
         android:name="com.example.happypets.ui.productos.RegistrarProducto"
         android:label="fragment_registrar_producto"
-        tools:layout="@layout/fragment_registrar_producto" />
+        tools:layout="@layout/fragment_registrar_producto">
+        <action
+            android:id="@+id/action_navigation_registrar_producto_to_navigation_productos"
+            app:destination="@id/navigation_productos" />
+    </fragment>
+
+
 </navigation>
 

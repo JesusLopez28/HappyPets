@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.happypets.MyApplication
 import com.example.happypets.Producto
 import com.example.happypets.R
@@ -47,7 +48,8 @@ class ProductoUsuarioFragment : Fragment() {
 
             // Cargar la imagen del producto desde drawable
             val imageResourceName = "producto_$id"
-            val imageResourceId = resources.getIdentifier(imageResourceName, "drawable", requireContext().packageName)
+            val imageResourceId =
+                resources.getIdentifier(imageResourceName, "drawable", requireContext().packageName)
             if (imageResourceId != 0) {
                 binding.imageView18.setImageResource(imageResourceId)
             } else {
@@ -61,6 +63,10 @@ class ProductoUsuarioFragment : Fragment() {
                 carrito.agregarProducto(it)
                 Log.d("Carrito", "Producto agregado al carrito: ${carrito.productos}")
             }
+        }
+
+        binding.AtrasProductoUsuarioButton.setOnClickListener() {
+            findNavController().navigate(R.id.action_productoUsuarioFragment_to_navigation_catalogo)
         }
 
         return root

@@ -1,8 +1,10 @@
 package com.example.happypets
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +19,7 @@ class RecuperacionActivity : AppCompatActivity() {
 
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
         val sendButton = findViewById<Button>(R.id.sendButton)
+        val atrasRecuperarDatosButton = findViewById<ImageButton>(R.id.AtrasRecuperarDatosButton)
 
         sendButton.setOnClickListener {
             val email = emailEditText.text.toString()
@@ -31,6 +34,10 @@ class RecuperacionActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor ingresé un Email", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        atrasRecuperarDatosButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 

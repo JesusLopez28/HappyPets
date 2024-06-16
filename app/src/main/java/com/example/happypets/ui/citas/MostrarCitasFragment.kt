@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.happypets.CitaManager
 import com.example.happypets.ProductoManager
 import com.example.happypets.R
@@ -17,6 +19,7 @@ class MostrarCitasFragment : Fragment() {
 
     private lateinit var citaManager: CitaManager
     private lateinit var listViewMisCitas: ListView
+    private lateinit var atrasMostrarCitasutton: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +28,12 @@ class MostrarCitasFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_mostrar_citas, container, false)
         listViewMisCitas = view.findViewById(R.id.ListViewMisCitas)
         citaManager = CitaManager(requireContext())
+        atrasMostrarCitasutton = view.findViewById(R.id.AtrasMostrarCitasutton)
+
+        atrasMostrarCitasutton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_mostrar_citas_to_navigation_citas_user)
+        }
+
         val email = requireActivity().intent.getStringExtra("email")
         val citas = citaManager.getCitasByEmail(requireContext(), email!!)
         if (citas.isEmpty()) {
