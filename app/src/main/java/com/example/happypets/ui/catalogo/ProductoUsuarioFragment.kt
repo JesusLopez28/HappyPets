@@ -57,13 +57,13 @@ class ProductoUsuarioFragment : Fragment() {
             }
         }
 
-        binding.AgregarProducto2Button.setOnClickListener {
+        /*binding.AgregarProducto2Button.setOnClickListener {
             producto?.let {
                 Log.d("Carrito", "Agregando producto al carrito: ${it.nombre}")
                 carrito.agregarProducto(it)
                 Log.d("Carrito", "Producto agregado al carrito: ${carrito.productos}")
             }
-        }
+        }*/
 
         binding.AtrasProductoUsuarioButton.setOnClickListener() {
             findNavController().navigate(R.id.action_productoUsuarioFragment_to_navigation_catalogo)

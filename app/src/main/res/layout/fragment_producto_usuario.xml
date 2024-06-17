@@ -90,15 +90,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DescripcionProducto" />
 
-        <Button
-            android:id="@+id/AgregarProducto2Button"
-            android:layout_width="295dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Agregar a Carrito"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PrecioProducto" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
