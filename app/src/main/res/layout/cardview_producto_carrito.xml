@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/producto_1" />
+            app:srcCompat="@drawable/producto_2" />
 
         <TextView
             android:id="@+id/Nombre_Producto_Carrito"

@@ -44,7 +44,7 @@ class ProductoUsuarioFragment : Fragment() {
             binding.textView13.text = nombre
             binding.DescripcionProducto.text = descripcion
             binding.PrecioProducto.text = "Precio: $$precio"
-            binding.imageView18.setImageResource(R.drawable.producto_1) // Cambiar si es necesario manualmente
+            binding.imageView18.setImageResource(R.drawable.producto_2) // Cambiar si es necesario manualmente
 
             // Cargar la imagen del producto desde drawable
             val imageResourceName = "producto_$id"
