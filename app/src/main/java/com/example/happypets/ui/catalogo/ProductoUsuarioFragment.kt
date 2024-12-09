@@ -1,10 +1,13 @@
 package com.example.happypets.ui.catalogo
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.happypets.MyApplication
@@ -44,17 +47,23 @@ class ProductoUsuarioFragment : Fragment() {
             binding.textView13.text = nombre
             binding.DescripcionProducto.text = descripcion
             binding.PrecioProducto.text = "Precio: $$precio"
-            binding.imageView18.setImageResource(R.drawable.producto_2) // Cambiar si es necesario manualmente
 
-            // Cargar la imagen del producto desde drawable
-            val imageResourceName = "producto_$id"
-            val imageResourceId =
-                resources.getIdentifier(imageResourceName, "drawable", requireContext().packageName)
-            if (imageResourceId != 0) {
-                binding.imageView18.setImageResource(imageResourceId)
+            val videoResourceName = "video_producto_$id"
+            val videoResourceId = resources.getIdentifier(videoResourceName, "raw", requireContext().packageName)
+
+            if (videoResourceId != 0) {
+                val videoUri = Uri.parse("android.resource://${requireContext().packageName}/$videoResourceId")
+                binding.videoView.setVideoURI(videoUri)
+                binding.videoView.setMediaController(MediaController(requireContext()))
+                binding.videoView.start()
             } else {
-                binding.imageView18.setImageResource(R.drawable.icono1)
+                Log.e("ProductoUsuarioFragment", "Video no encontrado: $videoResourceName")
+                Toast.makeText(requireContext(), "Video no disponible", Toast.LENGTH_SHORT).show()
             }
+            Log.d("ProductoUsuarioFragment", "ID del producto: $id")
+            Log.d("ProductoUsuarioFragment", "Nombre del recurso: $videoResourceName")
+            Log.d("ProductoUsuarioFragment", "ID del recurso: $videoResourceId")
+
         }
 
         /*binding.AgregarProducto2Button.setOnClickListener {

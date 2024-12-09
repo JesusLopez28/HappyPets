@@ -134,7 +134,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
@@ -142,8 +141,9 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     Toast.makeText(this, "Bienvenido, ${user?.displayName}", Toast.LENGTH_SHORT).show()
-                    // Navegar a otra actividad
+                    // Navegar a otra actividad y pasar el email
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("email", user?.email) // Pasar el email al Intent
                     startActivity(intent)
                 } else {
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)

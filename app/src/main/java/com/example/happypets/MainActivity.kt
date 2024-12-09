@@ -1,6 +1,7 @@
 package com.example.happypets
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,11 +22,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        val email = intent.getStringExtra("email")
-        val user = UserManager(this).getUserByEmail(email!!)
+        // Verificar si el Intent tiene el extra 'email'
+       /* val email = intent.getStringExtra("email")
+        if (email != null) {
+            val user = UserManager(this).getUserByEmail(email)
+        } else {
+            Log.e("MainActivity", "Email extra is missing in Intent")
+            Toast.makeText(this, "Error: Missing email", Toast.LENGTH_SHORT).show()
+        }*/
     }
 }

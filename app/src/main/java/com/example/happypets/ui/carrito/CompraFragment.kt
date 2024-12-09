@@ -1,5 +1,11 @@
 package com.example.happypets.ui.carrito
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +18,7 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,6 +26,7 @@ import com.example.happypets.Carrito
 import com.example.happypets.CarritoManager
 import com.example.happypets.Compra
 import com.example.happypets.MailSender
+import com.example.happypets.MainActivity
 import com.example.happypets.R
 import com.example.happypets.UserManager
 import com.example.happypets.databinding.FragmentCompraBinding
@@ -160,10 +168,47 @@ class CompraFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error al enviar el correo electrónico", Toast.LENGTH_SHORT).show()
                 }
             }
-
+            mostrarNotificacion(idCompra)
         }
     }
 
+    private fun mostrarNotificacion(idCompra: Int) {
+        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationId = System.currentTimeMillis().toInt() // ID único para cada notificación
+        val channelId = "compra_channel"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (notificationManager.getNotificationChannel(channelId) == null) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Compras",
+                    NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    description = "Notificaciones de compras"
+                }
+                notificationManager.createNotificationChannel(channel)
+            }
+        }
+
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            requireContext(),
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val notificationBuilder = NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.campana)
+            .setContentTitle("Compra Exitosa")
+            .setContentText("Tu compra con ID $idCompra ha sido procesada exitosamente.")
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        notificationManager.notify(notificationId, notificationBuilder.build())
+    }
 
     private fun limpiarCampos() {
         Direccion.text.clear()
