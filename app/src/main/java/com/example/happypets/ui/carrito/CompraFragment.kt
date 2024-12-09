@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -41,7 +42,7 @@ class CompraFragment : Fragment() {
     private lateinit var SubtotalCompra: TextView
     private lateinit var IvaCompra: TextView
     private lateinit var TotalCompra: TextView
-    private lateinit var atrasCompraButton : ImageButton
+    private lateinit var atrasCompraButton: ImageButton
 
     private lateinit var carrito: Carrito
 
@@ -94,7 +95,7 @@ class CompraFragment : Fragment() {
             PagarCompra()
         }
 
-        atrasCompraButton.setOnClickListener(){
+        atrasCompraButton.setOnClickListener() {
             findNavController().navigate(R.id.action_compraFragment_to_carritoFragment)
         }
 
@@ -107,7 +108,11 @@ class CompraFragment : Fragment() {
         val tipoEnvio = Tipo_Envio.selectedItem.toString()
 
         if (direccion.isEmpty() || direccion.isBlank() || Metodo_Pago.selectedItemPosition == 0 || Tipo_Envio.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Por favor completa todos los campos",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         } else {
             val idCompra = carrito.id + 1
@@ -165,15 +170,35 @@ class CompraFragment : Fragment() {
                     //findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Error al enviar el correo electrónico", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al enviar el correo electrónico",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             mostrarNotificacion(idCompra)
+
+
+            val originInput = "C. Nueva Escocia 1885, Providencia 5a Secc., 44638"
+            val destinationInput = direccion
+
+
+
+            if (originInput.isNotEmpty() && destinationInput.isNotEmpty()) {
+                val gmmIntentUri =
+                    Uri.parse("https://www.google.com/maps/dir/?api=1&origin=$originInput&destination=$destinationInput")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
         }
     }
 
+
     private fun mostrarNotificacion(idCompra: Int) {
-        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = System.currentTimeMillis().toInt() // ID único para cada notificación
         val channelId = "compra_channel"
 
