@@ -1,5 +1,6 @@
 package com.example.happypets.ui.perfil
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.happypets.Mascotas
 import com.example.happypets.R
 import com.example.happypets.UserManager
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import java.io.File
+import java.io.FileOutputStream
 
 class MostarMascotasFragment : Fragment() {
     private lateinit var userManager: UserManager
@@ -102,5 +108,45 @@ class MostarMascotasFragment : Fragment() {
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, mascotasList)
         listViewMisMascotas.adapter = adapter
+
+        val mascotaString = mascota.toString()
+
+        if(mascotaString.isNotEmpty()){
+            try {
+                // Generar el código QR
+                val barcodeEncoder = BarcodeEncoder()
+                val bitmap: Bitmap = barcodeEncoder.encodeBitmap(
+                    mascotaString,
+                    BarcodeFormat.QR_CODE,
+                    400,
+                    400
+                )
+
+                // Guardar el QR localmente
+                saveQRCode(bitmap, "qr_code_${mascota.nombre}.png")
+                Toast.makeText(requireContext(), "QR de mascota generado y guardado", Toast.LENGTH_SHORT).show()
+
+            } catch (e: WriterException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Error al generar QR", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Por favor ingresa texto", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveQRCode(bitmap: Bitmap, fileName: String) {
+        try {
+            val file = File(requireContext().getExternalFilesDir(null), fileName)
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+
+            Toast.makeText(requireContext(), "QR guardado en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "Error al guardar el QR", Toast.LENGTH_SHORT).show()
+        }
     }
 }

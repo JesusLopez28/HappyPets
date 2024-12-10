@@ -50,13 +50,13 @@
 
         <Button
             android:id="@+id/BuscarCitaButton"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/rounded_buttons"
             android:text="Buscar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.331"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/CalendarioAdmin" />
 
@@ -69,6 +69,30 @@
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/BuscarCitaButton" />
+
+        <TextView
+            android:id="@+id/textoCitaEscaneada"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            android:textColor="@color/brown_700"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ListaCitasAdmin" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_camera_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.185"
+            app:layout_constraintStart_toEndOf="@+id/BuscarCitaButton"
+            app:layout_constraintTop_toBottomOf="@+id/CalendarioAdmin" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -72,6 +72,10 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.6.0")
     implementation(libs.firebase.database.ktx)
 
+    implementation ("com.google.zxing:core:3.4.1")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("com.google.maps.android:android-maps-utils:2.2.5")
     implementation(libs.play.services.maps)
