@@ -127,7 +127,6 @@ class CitasAdminFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
     }

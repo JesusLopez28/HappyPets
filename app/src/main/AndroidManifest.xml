@@ -26,6 +26,7 @@
             android:exported="false" />
         <activity
             android:name=".RegistroActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
