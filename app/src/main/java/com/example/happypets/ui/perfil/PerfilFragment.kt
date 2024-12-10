@@ -13,10 +13,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.happypets.R
 import com.example.happypets.UserManager
 import com.example.happypets.databinding.FragmentPerfilBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
 class PerfilFragment : Fragment() {
 
     private lateinit var userManager: UserManager
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userManager = UserManager(requireContext())
@@ -31,6 +35,7 @@ class PerfilFragment : Fragment() {
         val emailUsuarioTextView = view.findViewById<TextView>(R.id.EmailUsuarioText)
         val btnCerrarSesion: Button = view.findViewById(R.id.btnCerrarSesion)
         val btnMascotas: Button = view.findViewById(R.id.btnVerMascotas)
+        auth = FirebaseAuth.getInstance()
 
         val email = requireActivity().intent.getStringExtra("email")
 
@@ -48,6 +53,12 @@ class PerfilFragment : Fragment() {
         }
 
         btnCerrarSesion.setOnClickListener {
+            auth.signOut() // Cierra sesión en Firebase
+            val googleSignInClient = GoogleSignIn.getClient(
+                requireActivity(),
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            )
+            googleSignInClient.signOut() // Cierra sesión en Google
             requireActivity().finish()
         }
 
