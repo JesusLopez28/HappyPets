@@ -80,6 +80,9 @@ dependencies {
     implementation ("com.google.maps.android:android-maps-utils:2.2.5")
     implementation(libs.play.services.maps)
 
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0") // Para manejar solicitudes HTTP
+    implementation ("com.google.code.gson:gson:2.10")     // Para manejar JSON
+
 
 
     testImplementation(libs.junit)
