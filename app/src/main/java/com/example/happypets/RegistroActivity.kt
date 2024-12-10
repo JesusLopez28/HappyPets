@@ -2,13 +2,15 @@ package com.example.happypets
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -23,14 +25,11 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var razaMascotaSpinner: Spinner
     private lateinit var atrasRegistrarteButton: ImageButton
 
-    private lateinit var userManager: UserManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
 
         initViews()
-        userManager = UserManager(this)
 
         registerButton.setOnClickListener { handleRegister() }
 
@@ -78,6 +77,7 @@ class RegistroActivity : AppCompatActivity() {
             } else if (!validatePhone(telefono)) {
                 showToast("Teléfono no válido")
             } else {
+                // Realizar la solicitud HTTP para registrar el usuario
                 registerUser(nombre, email, telefono, password, direccion, mascota, edad, raza)
             }
         } else {
@@ -109,18 +109,44 @@ class RegistroActivity : AppCompatActivity() {
         edad: String,
         raza: String
     ) {
-        val id = userManager.getAllUsers().size + 1
-        val mascota = Mascotas(mascota, raza, edad.toInt(), id)
-        val type = if (userManager.getAllUsers().isEmpty()) 2 else 1
-        val nuevoUsuario = Usuario(id, nombre, email, telefono, password, direccion, type)
-        val agregado = nuevoUsuario.agregarMascota(mascota)
-        if (!agregado) {
-            showToast("Error al agregar mascota")
-            return
-        }
-        userManager.saveUser(nuevoUsuario)
-        showToast("Usuario registrado correctamente")
-        navigateToLogin(nombre, email)
+        // Usando la constante BASE_URL para construir la URL completa
+        val url = "${Config.BASE_URL}/usuario/register.php"
+
+        val requestBody = FormBody.Builder()
+            .add("nombre", nombre)
+            .add("email", email)
+            .add("telefono", telefono)
+            .add("password", password)
+            .add("direccion", direccion)
+            .add("nombre_mascota", mascota)
+            .add("raza_mascota", raza)
+            .add("edad_mascota", edad)
+            .build()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    showToast("Error al registrar el usuario")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        showToast("Usuario registrado correctamente")
+                        navigateToLogin(nombre, email)
+                    } else {
+                        showToast("Error al registrar el usuario")
+                    }
+                }
+            }
+        })
     }
 
     private fun showToast(message: String) {
