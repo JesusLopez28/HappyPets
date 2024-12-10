@@ -15,4 +15,7 @@ class Mascotas {
 
     constructor()
 
+    override fun toString(): String {
+        return "Nombre: $nombre, Raza: $raza, Edad: $edad"
+    }
 }
