@@ -1,6 +1,9 @@
 package com.example.happypets.ui.perfil
 
+import android.content.ContentValues
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -20,6 +23,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.happypets.Config
 import com.example.happypets.Mascotas
 import com.example.happypets.R
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.common.BitMatrix
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -38,6 +44,8 @@ class MostarMascotasFragment : Fragment() {
     private lateinit var agregarMascotaButton: Button
     private lateinit var atrasMostrasMascotasButton: ImageButton
     private val mascotas = mutableListOf<Map<String, Any>>()
+
+    private val client = OkHttpClient()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -164,8 +172,6 @@ class MostarMascotasFragment : Fragment() {
         }
 
         val url = "${Config.BASE_URL}/mascota/agregar_mascota.php"
-        val client = OkHttpClient()
-
         val requestBody = FormBody.Builder()
             .add("email", email)
             .add("nombre", nombre)
@@ -181,29 +187,70 @@ class MostarMascotasFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 requireActivity().runOnUiThread {
-                    Toast.makeText(requireContext(), "Error al agregar mascota", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "Error al agregar mascota", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 requireActivity().runOnUiThread {
                     if (response.isSuccessful) {
-                        fetchMascotas(email)  // Actualizar lista de mascotas después de agregar una
-                        Toast.makeText(
-                            requireContext(),
-                            "Mascota agregada con éxito",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        fetchMascotas(email) // Actualizar lista de mascotas después de agregar una
+                        Toast.makeText(requireContext(), "Mascota agregada con éxito", Toast.LENGTH_SHORT).show()
+
+                        // Generar y guardar QR
+                        val qrContent = "Nombre: $nombre, Raza: $raza, Edad: $edad"
+                        generarYGuardarQR(qrContent)
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Error al agregar mascota",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Error al agregar mascota", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         })
+    }
+
+    private fun generarYGuardarQR(contenido: String) {
+        try {
+            val width = 500
+            val height = 500
+            val bitMatrix: BitMatrix = MultiFormatWriter().encode(contenido, BarcodeFormat.QR_CODE, width, height)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+
+            // Guardar el QR en la galería
+            val savedUri = guardarImagenEnGaleria(bitmap)
+            requireActivity().runOnUiThread {
+                if (savedUri != null) {
+                    Toast.makeText(requireContext(), "QR guardado en galería", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Error al guardar QR", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } catch (e: Exception) {
+            requireActivity().runOnUiThread {
+                Toast.makeText(requireContext(), "Error al generar QR", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun guardarImagenEnGaleria(bitmap: Bitmap): Uri? {
+        val resolver = requireContext().contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "MascotaQR_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/MascotasQR")
+        }
+
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        uri?.let {
+            resolver.openOutputStream(it)?.use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+        }
+        return uri
     }
 }
