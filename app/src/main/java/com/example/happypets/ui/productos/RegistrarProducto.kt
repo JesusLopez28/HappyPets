@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.happypets.Producto
-import com.example.happypets.ProductoManager
+import com.example.happypets.Config
 import com.example.happypets.R
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class RegistrarProducto : Fragment() {
-
-    private lateinit var productoManager: ProductoManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +39,6 @@ class RegistrarProducto : Fragment() {
         atrasAgregarProductoButton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_registrar_producto_to_navigation_productos)
         }
-
-        productoManager = ProductoManager(requireContext())
 
         // Definir las categorías directamente en el código
         val categorias = arrayOf("Alimento", "Juguetes", "Ropa", "Salud", "Hogar", "Paseo")
@@ -71,15 +75,8 @@ class RegistrarProducto : Fragment() {
                     return@setOnClickListener
                 }
 
-                val producto = Producto(
-                    id = productoManager.generateProductId(),
-                    nombre = nombre,
-                    descripcion = descripcion,
-                    precio = precio,
-                    stock = stock,
-                    categoria = categoria
-                )
-                productoManager.saveProduct(producto)
+                registrarProducto(nombre, descripcion, precio, stock, categoria)
+
                 Toast.makeText(
                     requireContext(),
                     "Producto agregado exitosamente",
@@ -104,5 +101,60 @@ class RegistrarProducto : Fragment() {
         view?.findViewById<EditText>(R.id.Precio_producto)?.text?.clear()
         view?.findViewById<EditText>(R.id.Stock_producto)?.text?.clear()
         view?.findViewById<Spinner>(R.id.spinner_categoria)?.setSelection(0)
+    }
+
+    private fun registrarProducto(
+        nombre: String,
+        descripcion: String,
+        precio: Double,
+        stock: Int,
+        categoria: String
+    ) {
+        val url = "${Config.BASE_URL}/producto/register.php"
+
+        val formBody = FormBody.Builder()
+            .add("nombre", nombre)
+            .add("descripcion", descripcion)
+            .add("precio", precio.toString())
+            .add("stock", stock.toString())
+            .add("categoria", categoria)
+            .build()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(formBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                requireActivity().runOnUiThread {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al registrar el producto",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                requireActivity().runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Producto registrado correctamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        clearFields()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al registrar el producto",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
     }
 }
