@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var forgotPasswordButton: Button
     private lateinit var registrateButton: Button
+    private lateinit var rememberMeCheckBox: CheckBox
 
     private lateinit var userManager: UserManager
 
@@ -47,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
 
         initViews()
         userManager = UserManager(this)
+
+        loadPreferences()
 
         loginButton.setOnClickListener { handleLogin() }
         forgotPasswordButton.setOnClickListener { navigateToRecuperacion() }
@@ -79,6 +83,7 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.button)
         forgotPasswordButton = findViewById(R.id.button2)
         registrateButton = findViewById(R.id.button4)
+        rememberMeCheckBox = findViewById(R.id.checkBox)
     }
 
     private fun handleLogin() {
@@ -88,6 +93,12 @@ class LoginActivity : AppCompatActivity() {
         if (email.isEmpty() || password.isEmpty()) {
             showToast("Por favor, llena todos los campos")
             return
+        }
+
+        if (rememberMeCheckBox.isChecked) {
+            savePreferences(email, password)
+        } else {
+            clearPreferences()
         }
 
         login(email, password)
@@ -184,6 +195,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+
     private fun loginWithGoogle(email: String) {
         val url = "${Config.BASE_URL}/usuario/login_google.php" // Endpoint de login con Google
 
@@ -239,6 +251,33 @@ class LoginActivity : AppCompatActivity() {
 
         startActivity(intent)
         finish()
+    }
+
+    private fun loadPreferences() {
+        val sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
+        val email = sharedPreferences.getString("email", "")
+        val password = sharedPreferences.getString("password", "")
+        val rememberMe = sharedPreferences.getBoolean("rememberMe", false)
+
+        emailEditText.setText(email)
+        passwordEditText.setText(password)
+        rememberMeCheckBox.isChecked = rememberMe
+    }
+
+    private fun savePreferences(email: String, password: String) {
+        val sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("email", email)
+        editor.putString("password", password)
+        editor.putBoolean("rememberMe", true)
+        editor.apply()
+    }
+
+    private fun clearPreferences() {
+        val sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear() // Elimina todas las preferencias guardadas
+        editor.apply()
     }
 
 
