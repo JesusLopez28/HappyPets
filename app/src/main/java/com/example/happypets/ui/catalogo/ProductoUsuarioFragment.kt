@@ -19,7 +19,6 @@ class ProductoUsuarioFragment : Fragment() {
 
     private var _binding: FragmentProductoUsuarioBinding? = null
     private val binding get() = _binding!!
-    private val carrito = MyApplication.carrito
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +48,12 @@ class ProductoUsuarioFragment : Fragment() {
             binding.PrecioProducto.text = "Precio: $$precio"
 
             val videoResourceName = "video_producto_$id"
-            val videoResourceId = resources.getIdentifier(videoResourceName, "raw", requireContext().packageName)
+            val videoResourceId =
+                resources.getIdentifier(videoResourceName, "raw", requireContext().packageName)
 
             if (videoResourceId != 0) {
-                val videoUri = Uri.parse("android.resource://${requireContext().packageName}/$videoResourceId")
+                val videoUri =
+                    Uri.parse("android.resource://${requireContext().packageName}/$videoResourceId")
                 binding.videoView.setVideoURI(videoUri)
                 binding.videoView.setMediaController(MediaController(requireContext()))
                 binding.videoView.start()

@@ -9,16 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.happypets.databinding.CardviewProductoBinding
 
 class ProductoAdapterUser(
-    private var productos: List<Producto>,
+    private var productos: List<Map<String, Any>>,
     private val listener: ProductoClickListener? = null
 ) : RecyclerView.Adapter<ProductoAdapterUser.ProductoViewHolder>() {
 
     interface ProductoClickListener {
-        fun onProductoClick(producto: Producto)
+        fun onProductoClick(producto: Map<String, Any>)
         fun onAgregarCarritoClick(position: Int)
     }
 
-    class ProductoViewHolder(val binding: CardviewProductoBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ProductoViewHolder(val binding: CardviewProductoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val nombreTextView: TextView = binding.NombreProducto
         val precioTextView: TextView = binding.PrecioProducto
         val productoImageView: ImageView = binding.imageView3
@@ -26,18 +27,25 @@ class ProductoAdapterUser(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
-        val binding = CardviewProductoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            CardviewProductoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productos[position]
-        holder.nombreTextView.text = producto.nombre
-        holder.precioTextView.text = "$${producto.precio}"
+        val nombre = producto["nombre"] as? String ?: "Sin nombre"
+        val precio = producto["precio"] as? Double ?: 0.0
+        val id = producto["id"] as? Int ?: 0
 
-        // Load image from drawable resources using the product ID
-        val imageResourceName = "producto_${producto.id}"
-        val imageResourceId = holder.productoImageView.context.resources.getIdentifier(imageResourceName, "drawable", holder.productoImageView.context.packageName)
+        holder.nombreTextView.text = nombre
+        holder.precioTextView.text = "$${precio}"
+
+        // Cargar imagen desde recursos usando el ID (si aplica)
+        val imageResourceName = "producto_$id"
+        val imageResourceId = holder.productoImageView.context.resources.getIdentifier(
+            imageResourceName, "drawable", holder.productoImageView.context.packageName
+        )
 
         if (imageResourceId != 0) {
             holder.productoImageView.setImageResource(imageResourceId)
@@ -56,16 +64,8 @@ class ProductoAdapterUser(
 
     override fun getItemCount() = productos.size
 
-    fun updateList(newList: List<Producto>) {
+    fun updateList(newList: List<Map<String, Any>>) {
         productos = newList
         notifyDataSetChanged()
     }
 }
-
-
-
-
-
-
-
-
