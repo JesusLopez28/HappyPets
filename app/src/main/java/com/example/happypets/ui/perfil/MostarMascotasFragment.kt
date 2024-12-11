@@ -1,10 +1,14 @@
 package com.example.happypets.ui.perfil
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -113,7 +117,6 @@ class MostarMascotasFragment : Fragment() {
 
         if(mascotaString.isNotEmpty()){
             try {
-                // Generar el código QR
                 val barcodeEncoder = BarcodeEncoder()
                 val bitmap: Bitmap = barcodeEncoder.encodeBitmap(
                     mascotaString,
@@ -122,8 +125,7 @@ class MostarMascotasFragment : Fragment() {
                     400
                 )
 
-                // Guardar el QR localmente
-                saveQRCode(bitmap, "qr_code_${mascota.nombre}.png")
+                saveQRCodeToGallery(bitmap, "qr_code_${mascota.nombre}.png")
                 Toast.makeText(requireContext(), "QR de mascota generado y guardado", Toast.LENGTH_SHORT).show()
 
             } catch (e: WriterException) {
@@ -135,18 +137,30 @@ class MostarMascotasFragment : Fragment() {
         }
     }
 
-    private fun saveQRCode(bitmap: Bitmap, fileName: String) {
-        try {
-            val file = File(requireContext().getExternalFilesDir(null), fileName)
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
+    fun saveQRCodeToGallery(bitmap: Bitmap, fileName: String) {
+        val resolver = requireContext().contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/QR_Mascotas")
+        }
 
-            Toast.makeText(requireContext(), "QR guardado en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(requireContext(), "Error al guardar el QR", Toast.LENGTH_SHORT).show()
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        if (uri != null) {
+            try {
+                resolver.openOutputStream(uri).use { outputStream ->
+                    if (outputStream != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                        Toast.makeText(requireContext(), "QR guardado en la galería", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Error al guardar el QR", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Error al acceder a la galería", Toast.LENGTH_SHORT).show()
         }
     }
 }
