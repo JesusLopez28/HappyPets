@@ -23,15 +23,24 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.happypets.Carrito
-import com.example.happypets.CarritoManager
-import com.example.happypets.Compra
+import com.example.happypets.Config
 import com.example.happypets.MailSender
 import com.example.happypets.MainActivity
 import com.example.happypets.R
 import com.example.happypets.UserManager
 import com.example.happypets.databinding.FragmentCompraBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class CompraFragment : Fragment() {
 
@@ -44,7 +53,11 @@ class CompraFragment : Fragment() {
     private lateinit var TotalCompra: TextView
     private lateinit var atrasCompraButton: ImageButton
 
-    private lateinit var carrito: Carrito
+    private val carrito = mutableListOf<MutableMap<String, Any>>()
+    private var subTotal: Double = 0.0
+    private var iva: Double = 0.0
+    private var total: Double = 0.0
+    private lateinit var email: String
 
     private var _binding: FragmentCompraBinding? = null
     private val binding get() = _binding!!
@@ -54,7 +67,6 @@ class CompraFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentCompraBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -67,14 +79,15 @@ class CompraFragment : Fragment() {
         TotalCompra = binding.TotalCompra
         atrasCompraButton = binding.AtrasCompraButton
 
-        carrito = CarritoManager.obtenerCarrito()
+        // Obtener email del intent
+        email = requireActivity().intent.getStringExtra("email") ?: ""
 
+        // Configurar spinners
         val MetodoPagoAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.metodos_pago,
             android.R.layout.simple_spinner_item
         )
-
         MetodoPagoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         Metodo_Pago.adapter = MetodoPagoAdapter
 
@@ -83,23 +96,96 @@ class CompraFragment : Fragment() {
             R.array.tipos_envio,
             android.R.layout.simple_spinner_item
         )
-
         TipoEnvioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         Tipo_Envio.adapter = TipoEnvioAdapter
 
-        SubtotalCompra.text = "$ ${String.format("%.2f", carrito.subTotal)}"
-        IvaCompra.text = "$ ${String.format("%.2f", carrito.iva)}"
-        TotalCompra.text = "$ ${String.format("%.2f", carrito.total)}"
+        // Obtener carrito desde el backend
+        obtenerCarrito()
 
         ButtonPagar.setOnClickListener {
             PagarCompra()
         }
 
-        atrasCompraButton.setOnClickListener() {
+        atrasCompraButton.setOnClickListener {
             findNavController().navigate(R.id.action_compraFragment_to_carritoFragment)
         }
 
         return view
+    }
+
+    private fun obtenerCarrito() {
+        val url = "${Config.BASE_URL}/carrito/get_cart.php?email=$email"
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                requireActivity().runOnUiThread {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al cargar el carrito",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                requireActivity().runOnUiThread {
+                    if (response.isSuccessful && responseBody != null) {
+                        try {
+                            val jsonResponse = JSONObject(responseBody)
+
+                            if (jsonResponse.has("carrito")) {
+                                val carritoData = jsonResponse.getJSONObject("carrito")
+                                val productosArray = carritoData.getJSONArray("productos")
+
+                                // Limpiar lista anterior
+                                carrito.clear()
+
+                                // Parsear productos
+                                for (i in 0 until productosArray.length()) {
+                                    val producto = productosArray.getJSONObject(i)
+                                    carrito.add(
+                                        mutableMapOf(
+                                            "id" to producto.getInt("id"),
+                                            "nombre" to producto.getString("nombre"),
+                                            "precio" to producto.getDouble("precio")
+                                        )
+                                    )
+                                }
+
+                                // Actualizar totales
+                                subTotal = carritoData.getDouble("subTotal")
+                                iva = carritoData.getDouble("iva")
+                                total = carritoData.getDouble("total")
+
+                                // Actualizar UI con totales
+                                SubtotalCompra.text = "$ ${String.format("%.2f", subTotal)}"
+                                IvaCompra.text = "$ ${String.format("%.2f", iva)}"
+                                TotalCompra.text = "$ ${String.format("%.2f", total)}"
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error al parsear el carrito",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al obtener el carrito",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
     }
 
     private fun PagarCompra() {
@@ -115,86 +201,101 @@ class CompraFragment : Fragment() {
             ).show()
             return
         } else {
-            val idCompra = carrito.id + 1
+            val idCompra = System.currentTimeMillis().toInt() // Generar ID único
 
-            val nuevaCompra = Compra(
-                idCompra,
-                carrito.productos,
-                direccion,
-                metodoPago,
-                tipoEnvio
-            )
-            val email = requireActivity().intent.getStringExtra("email")
-
-            // Obtener el correo electrónico del usuario desde UserManager
-            val userManager = UserManager(requireContext())
-            val usuario = email?.let { userManager.getUserByEmail(it) }
-
-            // Verificar si se encontró un usuario para el email proporcionado
-            val usuarioEmail = usuario?.email ?: run {
-                Log.e("CompraFragment", "Usuario no encontrado para el email: $email")
-                return   // o realiza alguna acción alternativa en caso de no encontrar el usuario
+            // Preparar datos para la solicitud de registro de compra
+            val productosArray = JSONArray()
+            carrito.forEach { producto ->
+                val productJson = JSONObject().apply {
+                    put("id", producto["id"])
+                    put("nombre", producto["nombre"])
+                    put("precio", producto["precio"])
+                }
+                productosArray.put(productJson)
             }
 
-            // Envío de correo electrónico al usuario
-            val emailSubject = "Compra realizada en Happy Pets"
-            val emailBody = "Detalles de la compra:\n" +
-                    "ID Compra: $idCompra\n" +
-                    "Productos: ${carrito.productos.joinToString { it.nombre }}\n" +
-                    "Dirección de entrega: $direccion\n" +
-                    "Método de pago: $metodoPago\n" +
-                    "Tipo de envío: $tipoEnvio\n" +
-                    "Subtotal: ${carrito.subTotal}\n" +
-                    "IVA: ${carrito.iva}\n" +
-                    "Total: ${carrito.total}"
+            val client = OkHttpClient()
+            val url = "${Config.BASE_URL}/compra/registrar_compra.php"
 
-            val mailSender = MailSender(usuarioEmail, emailSubject, emailBody)
+            val formBody = FormBody.Builder()
+                .add("email", email)
+                .add("direccion", direccion)
+                .add("metodo_pago", metodoPago)
+                .add("tipo_envio", tipoEnvio)
+                .build()
 
-            // Manejar el envío del correo dentro de un contexto coroutine
+            val request = Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build()
+
             lifecycleScope.launch {
                 try {
-                    mailSender.send()
-                    // Éxito al enviar el correo
-                    val mensaje = "¡Compra pagada exitosamente!\n" +
-                            "ID Compra: $idCompra\n"
-                    Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+                    val response = withContext(Dispatchers.IO) {
+                        client.newCall(request).execute()
+                    }
 
+                    if (response.isSuccessful) {
+                        // Envío de correo electrónico
+                        val emailSubject = "Compra realizada en Happy Pets"
+                        val emailBody = "Detalles de la compra:\n" +
+                                "ID Compra: $idCompra\n" +
+                                "Productos: ${carrito.joinToString { it["nombre"].toString() }}\n" +
+                                "Dirección de entrega: $direccion\n" +
+                                "Método de pago: $metodoPago\n" +
+                                "Tipo de envío: $tipoEnvio\n" +
+                                "Subtotal: $subTotal\n" +
+                                "IVA: $iva\n" +
+                                "Total: $total"
 
-                    limpiarCampos()
-                    carrito.productos.clear()
-                    carrito.calcularSubTotal()
-                    carrito.calcularIVA()
-                    carrito.calcularTotal()
+                        val mailSender = MailSender(email, emailSubject, emailBody)
 
-                    // Navegar de regreso al carrito o a la pantalla deseada
-                    //findNavController().navigate(R.id.action_compraFragment_to_navigation_carrito)
+                        mailSender.send()
+
+                        withContext(Dispatchers.Main) {
+                            val mensaje = "¡Compra pagada exitosamente!\n" +
+                                    "ID Compra: $idCompra\n"
+                            Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+
+                            limpiarCampos()
+                            carrito.clear()
+
+                            mostrarNotificacion(idCompra)
+
+                            // Abrir Google Maps para direcciones
+                            val originInput = "C. Nueva Escocia 1885, Providencia 5a Secc., 44638"
+                            val destinationInput = direccion
+
+                            if (originInput.isNotEmpty() && destinationInput.isNotEmpty()) {
+                                val gmmIntentUri =
+                                    Uri.parse("https://www.google.com/maps/dir/?api=1&origin=$originInput&destination=$destinationInput")
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                mapIntent.setPackage("com.google.android.apps.maps")
+                                startActivity(mapIntent)
+                            }
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error al registrar la compra",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(
-                        requireContext(),
-                        "Error al enviar el correo electrónico",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    withContext(Dispatchers.Main) {
+                        e.printStackTrace()
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al procesar la compra: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
-            mostrarNotificacion(idCompra)
-
-
-            val originInput = "C. Nueva Escocia 1885, Providencia 5a Secc., 44638"
-            val destinationInput = direccion
-
-
-
-            if (originInput.isNotEmpty() && destinationInput.isNotEmpty()) {
-                val gmmIntentUri =
-                    Uri.parse("https://www.google.com/maps/dir/?api=1&origin=$originInput&destination=$destinationInput")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
             }
         }
     }
-
 
     private fun mostrarNotificacion(idCompra: Int) {
         val notificationManager =
