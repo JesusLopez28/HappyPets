@@ -186,7 +186,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     if (user != null) {
-                        loginWithGoogle(user.email!!,user.displayName!!,user.phoneNumber ?: "0000000000")
+                        loginWithGoogle(
+                            user.email!!,
+                            user.displayName!!
+                        )
                     }
                 } else {
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
@@ -196,13 +199,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun loginWithGoogle(email: String, nombre: String, telefono: String) {
+    private fun loginWithGoogle(email: String, nombre: String) {
         val url = "${Config.BASE_URL}/usuario/login_google.php" // Endpoint de login con Google
 
         val requestBody = FormBody.Builder()
             .add("email", email)
             .add("nombre", nombre)
-            .add("telefono", telefono)
             .build()
 
         val client = OkHttpClient()
