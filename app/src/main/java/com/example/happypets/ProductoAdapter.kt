@@ -18,7 +18,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 class ProductoAdapter(
-    private val productos: List<Producto>,
+    private val productos: MutableList<Map<String, Any>>,
     private val listener: ProductoClickListener
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
@@ -45,9 +45,9 @@ class ProductoAdapter(
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productos[position]
-        holder.nombreTextView.text = producto.nombre
-        holder.precioTextView.text = "$${producto.precio}"
-        holder.stockTextView.text = producto.stock.toString()
+        holder.nombreTextView.text = producto["nombre"] as String
+        holder.precioTextView.text = "$${producto["precio"]}"
+        holder.stockTextView.text = producto["stock"].toString()
 
         holder.masButton.setOnClickListener {
             listener.onMasButtonClick(position)

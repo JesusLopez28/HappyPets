@@ -36,12 +36,12 @@ class UsuariosFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerview_Usuarios)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // Obtener los usuarios desde la API
+        fetchUsuarios()
+
         // Configurar el adaptador
         adapter = UsuarioAdapter(usuarios)
         recyclerView.adapter = adapter
-
-        // Obtener los usuarios desde la API
-        fetchUsuarios()
 
         return view
     }
