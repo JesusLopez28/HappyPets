@@ -17,6 +17,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONObject
+import okhttp3.Call
+import okhttp3.Callback
+import okio.IOException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -77,13 +85,12 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
 
-        val user = userManager.getUserByEmail(email)
-
-        if (user != null) {
-            login(email, password, user.type)
-        } else {
-            showToast("Usuario no encontrado")
+        if (email.isEmpty() || password.isEmpty()) {
+            showToast("Por favor, llena todos los campos")
+            return
         }
+
+        login(email, password)
     }
 
     private fun navigateToRecuperacion() {
@@ -94,20 +101,45 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, RegistroActivity::class.java))
     }
 
-    private fun login(email: String, password: String, userType: Int) {
-        val user = userManager.getUserByEmail(email)
-        if (user != null && user.password == password && user.type == userType) {
-            showToast("Bienvenido!!")
-            val intent = if (userType == 1) {
-                Intent(this, MainActivity::class.java)
-            } else {
-                Intent(this, MainActivity2::class.java)
+    private fun login(email: String, password: String) {
+        val url =
+            "${Config.BASE_URL}/usuario/login.php" // Endpoint de login por correo y contraseña
+
+        val requestBody = FormBody.Builder()
+            .add("email", email)
+            .add("password", password)
+            .build()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    showToast("Error de red: ${e.message}")
+                }
             }
-            intent.putExtra("email", email)
-            startActivity(intent)
-        } else {
-            showToast("Contraseña o Email incorrecto")
-        }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                runOnUiThread {
+                    if (response.isSuccessful && responseData != null) {
+                        val user = JSONObject(responseData)
+                        if (user.has("error")) {
+                            showToast(user.getString("error"))
+                        } else {
+                            showToast("Bienvenido ${user.getString("nombre")}")
+                            navigateToMain(user)
+                        }
+                    } else {
+                        showToast("Error al iniciar sesión" + response.message)
+                    }
+                }
+            }
+        })
     }
 
 
@@ -130,25 +162,84 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 Log.w("SignInActivity", "Google sign-in failed", e)
-                Toast.makeText(this, "Error en el inicio de sesión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error en el inicio de sesión" + e.message, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
+
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    Toast.makeText(this, "Bienvenido, ${user?.displayName}", Toast.LENGTH_SHORT).show()
-                    // Navegar a otra actividad y pasar el email
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("email", user?.email) // Pasar el email al Intent
-                    startActivity(intent)
+                    if (user != null) {
+                        loginWithGoogle(user.email ?: "")
+                    }
                 } else {
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, "Error en la autenticación", Toast.LENGTH_SHORT).show()
+                    showToast("Error en la autenticación")
                 }
             }
     }
+
+    private fun loginWithGoogle(email: String) {
+        val url = "${Config.BASE_URL}/usuario/login_google.php" // Endpoint de login con Google
+
+        val requestBody = FormBody.Builder()
+            .add("email", email)
+            .build()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    showToast("Error de red: ${e.message}")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                runOnUiThread {
+                    if (response.isSuccessful && responseData != null) {
+                        val result = JSONObject(responseData)
+                        if (result.has("error")) {
+                            showToast(result.getString("error"))
+                        } else {
+                            showToast(
+                                "Bienvenido ${
+                                    result.getJSONObject("data").getString("nombre")
+                                }"
+                            )
+                            navigateToMain(result.getJSONObject("data"))
+                        }
+                    } else {
+                        showToast("Error al iniciar sesión con Google" + response.message)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun navigateToMain(user: JSONObject) {
+        val type = user.getString("type")
+        val intent = if (type == "1") {
+            Intent(this, MainActivity::class.java)
+        } else {
+            Intent(this, MainActivity2::class.java)
+        }
+
+        intent.putExtra("email", user.getString("email"))
+
+        startActivity(intent)
+        finish()
+    }
+
+
 }

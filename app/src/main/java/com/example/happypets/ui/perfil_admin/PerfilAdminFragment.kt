@@ -10,10 +10,14 @@ import com.example.happypets.UserManager
 import android.widget.TextView
 import android.util.Log
 import android.widget.Button
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
 class PerfilAdminFragment : Fragment() {
 
     private lateinit var userManager: UserManager
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,8 @@ class PerfilAdminFragment : Fragment() {
         email?.let {
             val user = userManager.getUserByEmail(it)
             user?.let { admin ->
-                adminInfoTextView.text = "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\n"
+                adminInfoTextView.text =
+                    "Tipo: ${admin.type}\nNombre: ${admin.nombre}\nEmail: ${admin.email}\nTeléfono: ${admin.telefono}\nDirección: ${admin.direccion}\n"
                 adminRoleTextView.text = "${admin.nombre}"
             } ?: run {
                 Log.e("PerfilAdminFragment", "User not found for email: $email")
@@ -44,6 +49,12 @@ class PerfilAdminFragment : Fragment() {
         }
 
         btnCerrarSesion.setOnClickListener {
+            auth.signOut() // Cierra sesión en Firebase
+            val googleSignInClient = GoogleSignIn.getClient(
+                requireActivity(),
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            )
+            googleSignInClient.signOut() // Cierra sesión en Google
             requireActivity().finish()
         }
 
