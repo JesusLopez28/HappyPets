@@ -7,6 +7,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.happypets.R
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class ProductoAdapter(
     private val productos: List<Producto>,
@@ -29,7 +38,8 @@ class ProductoAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_producto_admin, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.cardview_producto_admin, parent, false)
         return ProductoViewHolder(view)
     }
 

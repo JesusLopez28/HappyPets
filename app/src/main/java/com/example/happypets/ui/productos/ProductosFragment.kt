@@ -14,6 +14,15 @@ import com.example.happypets.ProductoAdapter
 import com.example.happypets.ProductoManager
 import com.example.happypets.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class ProductosFragment : Fragment(), ProductoAdapter.ProductoClickListener {
 
@@ -29,7 +38,8 @@ class ProductosFragment : Fragment(), ProductoAdapter.ProductoClickListener {
         val view = inflater.inflate(R.layout.fragment_productos, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_Productos)
-        val agregarProductoButton: FloatingActionButton = view.findViewById(R.id.AgregarProductoButton)
+        val agregarProductoButton: FloatingActionButton =
+            view.findViewById(R.id.AgregarProductoButton)
 
         agregarProductoButton.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_productos_to_registrarProducto)
